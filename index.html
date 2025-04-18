@@ -1,0 +1,2375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradePulse | Advanced Stock Analytics</title>
+    <style>
+        /* CSS content removed for brevity - it was already complete in your original code */
+        :root {
+            --primary-dark: #121826;
+            --primary: #1E293B;
+            --primary-light: #334155;
+            --secondary: #0F172A;
+            --accent: #3B82F6;
+            --accent-hover: #2563EB;
+            --positive: #22C55E;
+            --negative: #EF4444;
+            --neutral: #94A3B8;
+            --gray-100: #F1F5F9;
+            --gray-200: #E2E8F0;
+            --gray-300: #CBD5E1;
+            --gray-400: #94A3B8;
+            --gray-500: #64748B;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1E293B;
+            --gray-900: #0F172A;
+            --text-light: #F8FAFC;
+            --text-dark: #0F172A;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            min-height: 100vh;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            grid-template-rows: 70px 1fr;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main";
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* SIDEBAR STYLES */
+        .sidebar {
+            grid-area: sidebar;
+            background-color: var(--secondary);
+            padding: 1.5rem 1rem;
+            border-right: 1px solid var(--primary-light);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+            border-radius: 8px;
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .logo-text {
+            color: var(--text-light);
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .nav-section {
+            margin-bottom: 2rem;
+        }
+
+        .nav-title {
+            color: var(--gray-400);
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+            padding: 0 0.5rem;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-item {
+            margin-bottom: 0.25rem;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 0.5rem;
+            border-radius: 0.375rem;
+            color: var(--gray-300);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-weight: 500;
+            gap: 0.75rem;
+        }
+
+        .nav-link:hover {
+            background-color: var(--primary-light);
+            color: var(--text-light);
+        }
+
+        .nav-link.active {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .nav-link svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .market-status {
+            padding: 1rem;
+            background-color: var(--primary);
+            border-radius: 0.5rem;
+            margin-top: auto;
+        }
+
+        .market-status-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .market-status-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-300);
+        }
+
+        .market-status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--positive);
+        }
+
+        .market-status-time {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            margin-bottom: 1rem;
+        }
+
+        .market-status-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        .market-name {
+            color: var(--gray-300);
+        }
+
+        .market-value {
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        /* HEADER STYLES */
+        .header {
+            grid-area: header;
+            background-color: var(--primary);
+            border-bottom: 1px solid var(--primary-light);
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.625rem 1rem 0.625rem 2.5rem;
+            border-radius: 0.375rem;
+            border: 1px solid var(--gray-700);
+            background-color: var(--primary-light);
+            color: var(--text-light);
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .search-input::placeholder {
+            color: var(--gray-400);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-400);
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .action-button {
+            background-color: transparent;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.375rem;
+            transition: all 0.2s;
+        }
+
+        .action-button:hover {
+            background-color: var(--primary-light);
+            color: var(--text-light);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 0.375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .user-profile:hover {
+            background-color: var(--primary-light);
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        /* MAIN CONTENT STYLES */
+        .main-content {
+            grid-area: main;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .welcome {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .date-time {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-auto-rows: auto;
+            gap: 1.5rem;
+        }
+
+        .card {
+            background-color: var(--primary);
+            border-radius: 0.75rem;
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+
+        .market-overview-card {
+            grid-column: span 12;
+            padding: 1.25rem;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .card-button {
+            padding: 0.375rem 0.75rem;
+            background-color: var(--primary-light);
+            border: none;
+            border-radius: 0.375rem;
+            color: var(--gray-300);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .card-button:hover {
+            background-color: var(--gray-700);
+            color: var(--text-light);
+        }
+
+        .card-button.active {
+            background-color: var(--accent);
+            color: white;
+        }
+
+        .market-overview {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .market-card {
+            padding: 1rem;
+            background-color: var(--primary-light);
+            border-radius: 0.5rem;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .market-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .market-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .market-card-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-300);
+        }
+
+        .market-card-symbol {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            padding: 0.25rem 0.5rem;
+            background-color: var(--primary);
+            border-radius: 1rem;
+        }
+
+        .market-card-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .market-card-change {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .change-positive {
+            color: var(--positive);
+        }
+
+        .change-negative {
+            color: var(--negative);
+        }
+
+        .stock-chart-card {
+            grid-column: span 8;
+            padding: 1.25rem;
+        }
+
+        .chart-controls {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .stock-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .stock-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .stock-logo img {
+            width: 70%;
+            height: auto;
+        }
+
+        .stock-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-name {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .stock-symbol {
+            font-size: 0.875rem;
+            color: var(--gray-400);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stock-badge {
+            display: inline-block;
+            padding: 0.125rem 0.5rem;
+            background-color: var(--primary-light);
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .time-filter {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-container {
+            height: 320px;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .chart-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(18, 24, 38, 0.8);
+            z-index: 50;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            border-radius: 0.5rem;
+        }
+
+        .chart-overlay.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .chart-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--primary-light);
+            border-left-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .stock-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .metric-item {
+            padding: 0.75rem;
+            background-color: var(--primary-light);
+            border-radius: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            margin-bottom: 0.25rem;
+        }
+
+        .metric-value {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .watchlist-card {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .watchlist-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        .tab-nav {
+            display: flex;
+            margin-top: 1rem;
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        .tab {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-400);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .tab.active {
+            color: var(--text-light);
+        }
+
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+        }
+
+        .watchlist-content {
+            flex: 1;
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        .stock-list {
+            list-style: none;
+        }
+
+        .stock-list-item {
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--primary-light);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .stock-list-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .stock-list-item.active {
+            background-color: rgba(59, 130, 246, 0.1);
+            border-left: 4px solid var(--accent);
+        }
+
+        .stock-list-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .mini-logo {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .mini-logo img {
+            width: 70%;
+            height: auto;
+        }
+
+        .stock-list-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stock-list-name {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .stock-list-symbol {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .stock-list-price {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .stock-list-value {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .stock-list-change {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .performance-card {
+            grid-column: span 4;
+            padding: 1.25rem;
+        }
+
+        .performance-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .performance-chart {
+            height: 200px;
+        }
+
+        .holdings-card {
+            grid-column: span 8;
+            padding: 1.25rem;
+        }
+
+        .holdings-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .holdings-table th {
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-400);
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        .holdings-table td {
+            padding: 0.75rem;
+            font-size: 0.875rem;
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        .asset {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .asset-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .asset-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .asset-name {
+            font-weight: 500;
+        }
+
+        .asset-symbol {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background-color: var(--primary-light);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background-color: var(--accent);
+            border-radius: 3px;
+        }
+
+        .news-card {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .news-header {
+            padding: 1.25rem;
+            border-bottom: 1px solid var(--primary-light);
+        }
+
+        .news-content {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .news-list {
+            list-style: none;
+        }
+
+        .news-item {
+            padding: 1rem 1.25rem;
+            border-bottom: 1px solid var(--primary-light);
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .news-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .news-source {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .news-source-name {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gray-300);
+        }
+
+        .news-time {
+            font-size: 0.75rem;
+            color: var(--gray-500);
+        }
+
+        .news-title {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .news-tags {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .news-tag {
+            font-size: 0.6875rem;
+            padding: 0.125rem 0.375rem;
+            background-color: var(--primary-light);
+            border-radius: 1rem;
+            color: var(--gray-300);
+        }
+
+        .stock-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-btn {
+            background-color: var(--primary-light);
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            color: var(--text-light);
+            font-size: 0.875rem;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .dropdown-btn:hover {
+            background-color: var(--gray-700);
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            min-width: 200px;
+            z-index: 100;
+            background-color: var(--primary);
+            border-radius: 0.375rem;
+            box-shadow: var(--shadow-lg);
+            top: calc(100% + 0.375rem);
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.75rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--primary-light);
+        }
+
+        .dropdown-item-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .dropdown-item-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .dropdown-item-symbol {
+            font-size: 0.75rem;
+            color: var(--gray-400);
+        }
+
+        .toast {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            padding: 1rem;
+            background-color: var(--primary);
+            border-left: 4px solid var(--accent);
+            border-radius: 0.375rem;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            z-index: 9999;
+            transform: translateX(calc(100% + 1.5rem));
+            transition: transform 0.3s ease-out;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: rgba(59, 130, 246, 0.2);
+            color: var(--accent);
+        }
+
+        .toast-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .toast-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-message {
+            font-size: 0.75rem;
+            color: var(--gray-300);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--gray-400);
+            cursor: pointer;
+        }
+
+        @media (max-width: 1200px) {
+            .stock-chart-card {
+                grid-column: span 12;
+            }
+            
+            .watchlist-card {
+                grid-column: span 6;
+            }
+            
+            .performance-card {
+                grid-column: span 6;
+            }
+            
+            .holdings-card {
+                grid-column: span 12;
+            }
+            
+            .news-card {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-areas:
+                    "header"
+                    "main";
+            }
+            
+            .sidebar {
+                display: none;
+            }
+            
+            .watchlist-card,
+            .performance-card {
+                grid-column: span 12;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .search-container {
+                width: 200px;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .market-overview {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .stock-metrics {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation keyframes */
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .pulse-animation {
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--gray-600);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="toast" id="notification-toast">
+        <div class="toast-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </svg>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Stock Alert</div>
+            <div class="toast-message">AAPL has increased by 2.5% in the last hour.</div>
+        </div>
+        <button class="toast-close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">TP</div>
+                <div class="logo-text">TradePulse</div>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Main</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
+                            </svg>
+                            Analytics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M5 10.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm0-2a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+                                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+                            </svg>
+                            Watchlists
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Trading</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
+                            </svg>
+                            Portfolio
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M1 2.5A1.5 1.5 0 0 1 2.5 1h3A1.5 1.5 0 0 1 7 2.5v3A1.5 1.5 0 0 1 5.5 7h-3A1.5 1.5 0 0 1 1 5.5v-3zM2.5 2a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 1h3A1.5 1.5 0 0 1 15 2.5v3A1.5 1.5 0 0 1 13.5 7h-3A1.5 1.5 0 0 1 9 5.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zM1 10.5A1.5 1.5 0 0 1 2.5 9h3A1.5 1.5 0 0 1 7 10.5v3A1.5 1.5 0 0 1 5.5 15h-3A1.5 1.5 0 0 1 1 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3zm6.5.5A1.5 1.5 0 0 1 10.5 9h3a1.5 1.5 0 0 1 1.5 1.5v3a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 13.5v-3zm1.5-.5a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5h-3z"/>
+                            </svg>
+                            Orders
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+                            </svg>
+                            Trade
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-title">Account</div>
+                <ul class="nav-list">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+                            </svg>
+                            Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M9.405 1.05c-.413-1.4-2.397-1.4-2.81 0l-.1.34a1.464 1.464 0 0 1-2.105.872l-.31-.17c-1.283-.698-2.686.705-1.987 1.987l.169.311c.446.82.023 1.841-.872 2.105l-.34.1c-1.4.413-1.4 2.397 0 2.81l.34.1a1.464 1.464 0 0 1 .872 2.105l-.17.31c-.698 1.283.705 2.686 1.987 1.987l.311-.169a1.464 1.464 0 0 1 2.105.872l.1.34c.413 1.4 2.397 1.4 2.81 0l.1-.34a1.464 1.464 0 0 1 2.105-.872l.31.17c1.283.698 2.686-.705 1.987-1.987l-.169-.311a1.464 1.464 0 0 1 .872-2.105l.34-.1c1.4-.413 1.4-2.397 0-2.81l-.34-.1a1.464 1.464 0 0 1-.872-2.105l.17-.31c.698-1.283-.705-2.686-1.987-1.987l-.311.169a1.464 1.464 0 0 1-2.105-.872l-.1-.34zM8 10.93a2.929 2.929 0 1 1 0-5.86 2.929 2.929 0 0 1 0 5.858z"/>
+                            </svg>
+                            Settings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z"/>
+                            </svg>
+                            Support
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="market-status">
+                <div class="market-status-header">
+                    <div class="market-status-title">Market Status</div>
+                    <div class="market-status-indicator">
+                        <div class="indicator-dot"></div>
+                        Open
+                    </div>
+                </div>
+                <div class="market-status-time">04:30:45 PM EDT</div>
+                <div class="market-status-list">
+                    <div class="market-item">
+                        <div class="market-name">S&P 500</div>
+                        <div class="market-value">5,234.18</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">Nasdaq</div>
+                        <div class="market-value">16,752.23</div>
+                    </div>
+                    <div class="market-item">
+                        <div class="market-name">Dow Jones</div>
+                        <div class="market-value">38,654.42</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Header -->
+        <header class="header">
+            <div class="search-container">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                <input type="text" class="search-input" placeholder="Search for stocks, ETFs...">
+            </div>
+            
+            <div class="header-actions">
+                <button class="action-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zM8 1.918l-.797.161A4.002 4.002 0 0 0 4 6c0 .628-.134 2.197-.459 3.742-.16.767-.376 1.566-.663 2.258h10.244c-.287-.692-.502-1.49-.663-2.258C12.134 8.197 12 6.628 12 6a4.002 4.002 0 0 0-3.203-3.92L8 1.917zM14.22 12c.223.447.481.801.78 1H1c.299-.199.557-.553.78-1C2.68 10.2 3 6.88 3 6c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0A5.002 5.002 0 0 1 13 6c0 .88.32 4.2 1.22 6z"/>
+                    </svg>
+                </button>
+                <button class="action-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                    </svg>
+                </button>
+                <div class="user-profile">
+                    <div class="avatar">JS</div>
+                    <div class="user-info">
+                        <div class="user-name">John Smith</div>
+                        <div class="user-role">Premium Account</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <div class="main-header">
+                <div class="welcome">Good afternoon, John</div>
+                <div class="date-time">Sunday, April 13, 2025 | 04:30 PM EDT</div>
+            </div>
+
+            <div class="dashboard-grid">
+                <!-- Market Overview Card -->
+                <div class="card market-overview-card">
+                    <div class="card-header">
+                        <div class="card-title">Market Overview</div>
+                        <div class="card-actions">
+                            <button class="card-button active">US Markets</button>
+                            <button class="card-button">Global</button>
+                            <button class="card-button">Crypto</button>
+                        </div>
+                    </div>
+                    <div class="market-overview">
+                        <div class="market-card">
+                            <div class="market-card-header">
+                                <div class="market-card-name">S&P 500</div>
+                                <div class="market-card-symbol">SPY</div>
+                            </div>
+                            <div class="market-card-price">5,234.18</div>
+                            <div class="market-card-change change-positive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                </svg>
+                                +1.32% (+68.24)
+                            </div>
+                        </div>
+                        <div class="market-card">
+                            <div class="market-card-header">
+                                <div class="market-card-name">Nasdaq</div>
+                                <div class="market-card-symbol">QQQ</div>
+                            </div>
+                            <div class="market-card-price">16,752.23</div>
+                            <div class="market-card-change change-positive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                </svg>
+                                +2.15% (+352.85)
+                            </div>
+                        </div>
+                        <div class="market-card">
+                            <div class="market-card-header">
+                                <div class="market-card-name">Dow Jones</div>
+                                <div class="market-card-symbol">DIA</div>
+                            </div>
+                            <div class="market-card-price">38,654.42</div>
+                            <div class="market-card-change change-positive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                </svg>
+                                +0.76% (+291.24)
+                            </div>
+                        </div>
+                        <div class="market-card">
+                            <div class="market-card-header">
+                                <div class="market-card-name">Russell 2000</div>
+                                <div class="market-card-symbol">IWM</div>
+                            </div>
+                            <div class="market-card-price">2,184.87</div>
+                            <div class="market-card-change change-negative">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
+                                </svg>
+                                -0.45% (-9.82)
+                            </div>
+                        </div>
+                        <div class="market-card">
+                            <div class="market-card-header">
+                                <div class="market-card-name">10-Year Treasury</div>
+                                <div class="market-card-symbol">TNX</div>
+                            </div>
+                            <div class="market-card-price">4.29%</div>
+                            <div class="market-card-change change-positive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
+                                </svg>
+                                +0.05
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stock Chart Card -->
+                <div class="card stock-chart-card">
+                    <div class="chart-controls">
+                        <div class="stock-selector">
+                            <div class="stock-logo">
+                                <img src="/api/placeholder/40/40" alt="Apple Logo">
+                            </div>
+                            <div class="stock-info">
+                                <div class="stock-name">Apple Inc.</div>
+                                <div class="stock-symbol">
+                                    AAPL
+                                    <span class="stock-badge">NASDAQ</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stock-dropdown">
+                            <button class="dropdown-btn" id="stockDropdownBtn">
+                                Change Stock
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
+                              </svg>
+                          </button>
+                          <div class="dropdown-content" id="stockDropdown">
+                              <div class="dropdown-item">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Apple Logo">
+                                  </div>
+                                  <div class="dropdown-item-info">
+                                      <div class="dropdown-item-name">Apple Inc.</div>
+                                      <div class="dropdown-item-symbol">AAPL</div>
+                                  </div>
+                              </div>
+                              <div class="dropdown-item">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Microsoft Logo">
+                                  </div>
+                                  <div class="dropdown-item-info">
+                                      <div class="dropdown-item-name">Microsoft Corp.</div>
+                                      <div class="dropdown-item-symbol">MSFT</div>
+                                  </div>
+                              </div>
+                              <div class="dropdown-item">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Google Logo">
+                                  </div>
+                                  <div class="dropdown-item-info">
+                                      <div class="dropdown-item-name">Alphabet Inc.</div>
+                                      <div class="dropdown-item-symbol">GOOGL</div>
+                                  </div>
+                              </div>
+                              <div class="dropdown-item">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Amazon Logo">
+                                  </div>
+                                  <div class="dropdown-item-info">
+                                      <div class="dropdown-item-name">Amazon.com Inc.</div>
+                                      <div class="dropdown-item-symbol">AMZN</div>
+                                  </div>
+                              </div>
+                              <div class="dropdown-item">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Tesla Logo">
+                                  </div>
+                                  <div class="dropdown-item-info">
+                                      <div class="dropdown-item-name">Tesla Inc.</div>
+                                      <div class="dropdown-item-symbol">TSLA</div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+
+                      <div class="time-filter">
+                          <button class="card-button">1D</button>
+                          <button class="card-button">1W</button>
+                          <button class="card-button active">1M</button>
+                          <button class="card-button">3M</button>
+                          <button class="card-button">1Y</button>
+                          <button class="card-button">5Y</button>
+                      </div>
+                  </div>
+
+                  <div class="chart-container">
+                      <canvas id="stockChart"></canvas>
+                      <div class="chart-overlay" id="chartOverlay">
+                          <div class="chart-loading">
+                              <div class="spinner"></div>
+                              <div>Loading chart data...</div>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="stock-metrics">
+                      <div class="metric-item">
+                          <div class="metric-label">Open</div>
+                          <div class="metric-value">$173.28</div>
+                      </div>
+                      <div class="metric-item">
+                          <div class="metric-label">High</div>
+                          <div class="metric-value">$177.54</div>
+                      </div>
+                      <div class="metric-item">
+                          <div class="metric-label">Low</div>
+                          <div class="metric-value">$172.95</div>
+                      </div>
+                      <div class="metric-item">
+                          <div class="metric-label">Volume</div>
+                          <div class="metric-value">68.4M</div>
+                      </div>
+                      <div class="metric-item">
+                          <div class="metric-label">Market Cap</div>
+                          <div class="metric-value">$2.78T</div>
+                      </div>
+                      <div class="metric-item">
+                          <div class="metric-label">P/E Ratio</div>
+                          <div class="metric-value">29.45</div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Watchlist Card -->
+              <div class="card watchlist-card">
+                  <div class="watchlist-header">
+                      <div class="card-header">
+                          <div class="card-title">Watchlists</div>
+                          <div class="card-actions">
+                              <button class="card-button">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                  </svg>
+                              </button>
+                          </div>
+                      </div>
+                      <div class="tab-nav">
+                          <div class="tab active">Tech</div>
+                          <div class="tab">Indices</div>
+                          <div class="tab">Growth</div>
+                      </div>
+                  </div>
+                  <div class="watchlist-content">
+                      <ul class="stock-list">
+                          <li class="stock-list-item active">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Apple Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Apple Inc.</div>
+                                      <div class="stock-list-symbol">AAPL</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$177.42</div>
+                                  <div class="stock-list-change change-positive">+2.36%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Microsoft Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Microsoft Corp.</div>
+                                      <div class="stock-list-symbol">MSFT</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$423.65</div>
+                                  <div class="stock-list-change change-positive">+1.78%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Google Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Alphabet Inc.</div>
+                                      <div class="stock-list-symbol">GOOGL</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$165.87</div>
+                                  <div class="stock-list-change change-positive">+0.92%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Amazon Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Amazon.com Inc.</div>
+                                      <div class="stock-list-symbol">AMZN</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$182.45</div>
+                                  <div class="stock-list-change change-positive">+1.15%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Tesla Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Tesla Inc.</div>
+                                      <div class="stock-list-symbol">TSLA</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$172.63</div>
+                                  <div class="stock-list-change change-negative">-2.14%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="NVIDIA Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">NVIDIA Corp.</div>
+                                      <div class="stock-list-symbol">NVDA</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$897.46</div>
+                                  <div class="stock-list-change change-positive">+3.65%</div>
+                              </div>
+                          </li>
+                          <li class="stock-list-item">
+                              <div class="stock-list-info">
+                                  <div class="mini-logo">
+                                      <img src="/api/placeholder/32/32" alt="Meta Logo">
+                                  </div>
+                                  <div class="stock-list-details">
+                                      <div class="stock-list-name">Meta Platforms Inc.</div>
+                                      <div class="stock-list-symbol">META</div>
+                                  </div>
+                              </div>
+                              <div class="stock-list-price">
+                                  <div class="stock-list-value">$492.14</div>
+                                  <div class="stock-list-change change-positive">+1.23%</div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+
+              <!-- Performance Card -->
+              <div class="card performance-card">
+                  <div class="performance-header">
+                      <div class="card-header">
+                          <div class="card-title">Portfolio Performance</div>
+                          <div class="card-actions">
+                              <button class="card-button active">1M</button>
+                              <button class="card-button">3M</button>
+                              <button class="card-button">1Y</button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="performance-chart">
+                      <canvas id="performanceChart"></canvas>
+                  </div>
+              </div>
+
+              <!-- Holdings Card -->
+              <div class="card holdings-card">
+                  <div class="card-header">
+                      <div class="card-title">Your Holdings</div>
+                      <div class="card-actions">
+                          <button class="card-button">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5z"/>
+                                  <path fill-rule="evenodd" d="M.146 4.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 3.5H5.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
+                              </svg>
+                              Export
+                          </button>
+                      </div>
+                  </div>
+                  <table class="holdings-table">
+                      <thead>
+                          <tr>
+                              <th>Asset</th>
+                              <th>Quantity</th>
+                              <th>Avg. Price</th>
+                              <th>Current Price</th>
+                              <th>Value</th>
+                              <th>Return</th>
+                              <th>Allocation</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>
+                                  <div class="asset">
+                                      <div class="asset-logo">
+                                          <img src="/api/placeholder/30/30" alt="Apple Logo">
+                                      </div>
+                                      <div class="asset-info">
+                                          <div class="asset-name">Apple Inc.</div>
+                                          <div class="asset-symbol">AAPL</div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>125</td>
+                              <td>$152.34</td>
+                              <td>$177.42</td>
+                              <td>$22,177.50</td>
+                              <td class="change-positive">+16.46%</td>
+                              <td>
+                                  <div class="progress-bar">
+                                      <div class="progress" style="width: 32%;"></div>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <div class="asset">
+                                      <div class="asset-logo">
+                                          <img src="/api/placeholder/30/30" alt="Microsoft Logo">
+                                      </div>
+                                      <div class="asset-info">
+                                          <div class="asset-name">Microsoft Corp.</div>
+                                          <div class="asset-symbol">MSFT</div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>42</td>
+                              <td>$378.15</td>
+                              <td>$423.65</td>
+                              <td>$17,793.30</td>
+                              <td class="change-positive">+12.03%</td>
+                              <td>
+                                  <div class="progress-bar">
+                                      <div class="progress" style="width: 26%;"></div>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <div class="asset">
+                                      <div class="asset-logo">
+                                          <img src="/api/placeholder/30/30" alt="NVIDIA Logo">
+                                      </div>
+                                      <div class="asset-info">
+                                          <div class="asset-name">NVIDIA Corp.</div>
+                                          <div class="asset-symbol">NVDA</div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>15</td>
+                              <td>$425.78</td>
+                              <td>$897.46</td>
+                              <td>$13,461.90</td>
+                              <td class="change-positive">+110.78%</td>
+                              <td>
+                                  <div class="progress-bar">
+                                      <div class="progress" style="width: 19%;"></div>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <div class="asset">
+                                      <div class="asset-logo">
+                                          <img src="/api/placeholder/30/30" alt="Amazon Logo">
+                                      </div>
+                                      <div class="asset-info">
+                                          <div class="asset-name">Amazon.com Inc.</div>
+                                          <div class="asset-symbol">AMZN</div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>68</td>
+                              <td>$145.23</td>
+                              <td>$182.45</td>
+                              <td>$12,406.60</td>
+                              <td class="change-positive">+25.63%</td>
+                              <td>
+                                  <div class="progress-bar">
+                                      <div class="progress" style="width: 18%;"></div>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td>
+                                  <div class="asset">
+                                      <div class="asset-logo">
+                                          <img src="/api/placeholder/30/30" alt="Google Logo">
+                                      </div>
+                                      <div class="asset-info">
+                                          <div class="asset-name">Alphabet Inc.</div>
+                                          <div class="asset-symbol">GOOGL</div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>32</td>
+                              <td>$142.80</td>
+                              <td>$165.87</td>
+                              <td>$5,307.84</td>
+                              <td class="change-positive">+16.15%</td>
+                              <td>
+                                  <div class="progress-bar">
+                                      <div class="progress" style="width: 8%;"></div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+
+              <!-- News Card -->
+              <div class="card news-card">
+                  <div class="news-header">
+                      <div class="card-header">
+                          <div class="card-title">Latest News</div>
+                          <div class="card-actions">
+                              <button class="card-button">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                  </svg>
+                              </button>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="news-content">
+                      <ul class="news-list">
+                          <li class="news-item">
+                              <div class="news-source">
+                                  <div class="news-source-name">MarketWatch</div>
+                                  <div class="news-time">2 hours ago</div>
+                              </div>
+                              <div class="news-title">Apple's AI strategy could drive a new wave of iPhone upgrades, analysts say</div>
+                              <div class="news-tags">
+                                  <div class="news-tag">AAPL</div>
+                                  <div class="news-tag">AI</div>
+                                  <div class="news-tag">Tech</div>
+                              </div>
+                          </li>
+                          <li class="news-item">
+                              <div class="news-source">
+                                  <div class="news-source-name">CNBC</div>
+                                  <div class="news-time">4 hours ago</div>
+                              </div>
+                              <div class="news-title">NVIDIA surges as new AI chip announcement beats market expectations</div>
+                              <div class="news-tags">
+                                  <div class="news-tag">NVDA</div>
+                                  <div class="news-tag">Semiconductors</div>
+                              </div>
+                          </li>
+                          <li class="news-item">
+                              <div class="news-source">
+                                  <div class="news-source-name">Bloomberg</div>
+                                  <div class="news-time">6 hours ago</div>
+                              </div>
+                              <div class="news-title">Fed signals potential rate cut as inflation shows signs of cooling</div>
+                              <div class="news-tags">
+                                  <div class="news-tag">Fed</div>
+                                  <div class="news-tag">Economy</div>
+                              </div>
+                          </li>
+                          <li class="news-item">
+                              <div class="news-source">
+                                  <div class="news-source-name">Reuters</div>
+                                  <div class="news-time">8 hours ago</div>
+                              </div>
+                              <div class="news-title">Tesla delivers record number of vehicles in Q1, beats Wall Street estimates</div>
+                              <div class="news-tags">
+                                  <div class="news-tag">TSLA</div>
+                                  <div class="news-tag">Automotive</div>
+                              </div>
+                          </li>
+                          <li class="news-item">
+                              <div class="news-source">
+                                  <div class="news-source-name">WSJ</div>
+                                  <div class="news-time">10 hours ago</div>
+                              </div>
+                              <div class="news-title">Microsoft and OpenAI announce new partnership for enterprise AI solutions</div>
+                              <div class="news-tags">
+                                  <div class="news-tag">MSFT</div>
+                                  <div class="news-tag">AI</div>
+                              </div>
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </main>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Chart.js initialization
+    const stockChartCtx = document.getElementById('stockChart').getContext('2d');
+    const performanceChartCtx = document.getElementById('performanceChart').getContext('2d');
+    
+    // Chart.js configuration
+    const stockChart = new Chart(stockChartCtx, {
+        type: 'line',
+        data: {
+            labels: Array.from({length: 30}, (_, i) => i + 1),
+            datasets: [{
+                label: 'AAPL Stock Price',
+                data: [
+                    170.12, 171.45, 169.87, 172.34, 173.65, 174.28, 172.95, 173.42, 175.63, 174.89,
+                    173.76, 172.54, 171.98, 173.21, 174.67, 175.32, 176.54, 175.87, 174.32, 173.98,
+                    175.21, 176.43, 175.76, 174.32, 173.87, 175.32, 176.85, 177.32, 176.87, 177.42
+                ],
+                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                borderColor: '#3B82F6',
+                borderWidth: 2,
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                pointHoverBackgroundColor: '#3B82F6',
+                pointHoverBorderColor: '#3B82F6',
+                pointHoverRadius: 5,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    grid: {
+                        display: false,
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#94A3B8',
+                        font: {
+                            size: 10
+                        },
+                        maxRotation: 0
+                    }
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(71, 85, 105, 0.15)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#94A3B8',
+                        font: {
+                            size: 10
+                        },
+                        callback: function(value) {
+                            return '$' + value;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#1E293B',
+                    titleColor: '#F8FAFC',
+                    bodyColor: '#E2E8F0',
+                    titleFont: {
+                        size: 12
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 10,
+                    cornerRadius: 4,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            return 'Day ' + tooltipItems[0].label;
+                        },
+                        label: function(context) {
+                            return '$' + context.raw;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    const performanceChart = new Chart(performanceChartCtx, {
+        type: 'line',
+        data: {
+            labels: Array.from({length: 30}, (_, i) => i + 1),
+            datasets: [{
+                label: 'Portfolio Value',
+                data: [
+                    68520, 68750, 68200, 69150, 69800, 70200, 69750, 70100, 71500, 71200,
+                    70400, 69800, 69500, 70300, 71200, 71800, 72500, 72100, 71400, 71000,
+                    71800, 72900, 72400, 71500, 71200, 72300, 73800, 74500, 74100, 74800
+                ],
+                backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                borderColor: '#22C55E',
+                borderWidth: 2,
+                pointBackgroundColor: 'transparent',
+                pointBorderColor: 'transparent',
+                pointHoverBackgroundColor: '#22C55E',
+                pointHoverBorderColor: '#22C55E',
+                pointHoverRadius: 5,
+                tension: 0.3,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    display: false
+                },
+                y: {
+                    grid: {
+                        color: 'rgba(71, 85, 105, 0.15)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#94A3B8',
+                        font: {
+                            size: 10
+                        },
+                        callback: function(value) {
+                            return '$' + value.toLocaleString();
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: '#1E293B',
+                    titleColor: '#F8FAFC',
+                    bodyColor: '#E2E8F0',
+                    titleFont: {
+                        size: 12
+                    },
+                    bodyFont: {
+                        size: 12
+                    },
+                    padding: 10,
+                    cornerRadius: 4,
+                    displayColors: false,
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            return 'Day ' + tooltipItems[0].label;
+                        },
+                        label: function(context) {
+                            return '$' + context.raw.toLocaleString();
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Chart loading simulation
+    const chartOverlay = document.getElementById('chartOverlay');
+    chartOverlay.classList.add('visible');
+    
+    setTimeout(() => {
+        chartOverlay.classList.remove('visible');
+    }, 1500);
+
+    // Dropdown functionality
+    const stockDropdownBtn = document.getElementById('stockDropdownBtn');
+    const stockDropdown = document.getElementById('stockDropdown');
+
+    stockDropdownBtn.addEventListener('click', function() {
+        stockDropdown.classList.toggle('show');
+    });
+
+    // Close the dropdown if clicked outside
+    window.addEventListener('click', function(event) {
+        if (!event.target.matches('.dropdown-btn') && !event.target.closest('.dropdown-btn')) {
+            if (stockDropdown.classList.contains('show')) {
+                stockDropdown.classList.remove('show');
+            }
+        }
+    });
+
+    // Dropdown item selection
+    const dropdownItems = document.querySelectorAll('.dropdown-item');
+    dropdownItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Get selected stock info
+            const symbol = this.querySelector('.dropdown-item-symbol').textContent;
+            const name = this.querySelector('.dropdown-item-name').textContent;
+            const logo = this.querySelector('.mini-logo img').getAttribute('src');
+            
+            // Update the stock selector display
+            const stockLogo = document.querySelector('.stock-selector .stock-logo img');
+            const stockName = document.querySelector('.stock-selector .stock-name');
+            const stockSymbol = document.querySelector('.stock-selector .stock-symbol');
+            
+            stockLogo.setAttribute('src', logo);
+            stockName.textContent = name;
+            stockSymbol.innerHTML = symbol + '<span class="stock-badge">NASDAQ</span>';
+            
+            // Update chart with new stock data (simulated)
+            updateStockChart(symbol);
+            
+            // Close dropdown
+            stockDropdown.classList.remove('show');
+        });
+    });
+    
+    // Function to update stock chart with new data (simulated)
+    function updateStockChart(symbol) {
+        // Add loading effect
+        chartOverlay.classList.add('visible');
+        
+        // Simulate data fetch
+        setTimeout(() => {
+            // Generate random stock data based on symbol
+            const mockData = generateMockData(symbol);
+            
+            // Update chart data
+            stockChart.data.datasets[0].label = symbol + ' Stock Price';
+            stockChart.data.datasets[0].data = mockData;
+            stockChart.update();
+            
+            // Update stock metrics
+            updateStockMetrics(symbol);
+            
+            // Remove loading
+            chartOverlay.classList.remove('visible');
+        }, 800);
+    }
+    
+    // Function to generate mock data for different stocks
+    function generateMockData(symbol) {
+        const baseValue = {
+            'AAPL': 175,
+            'MSFT': 420,
+            'GOOGL': 165,
+            'AMZN': 180,
+            'TSLA': 170
+        }[symbol] || 100;
+        
+        // Generate 30 days of slightly varying data
+        return Array.from({length: 30}, () => {
+            return baseValue + (Math.random() * 10 - 5);
+        });
+    }
+    
+    // Function to update stock metrics
+    function updateStockMetrics(symbol) {
+        const metrics = {
+            'AAPL': {
+                open: '$173.28',
+                high: '$177.54',
+                low: '$172.95',
+                volume: '68.4M',
+                marketCap: '$2.78T',
+                pe: '29.45'
+            },
+            'MSFT': {
+                open: '$421.32',
+                high: '$425.84',
+                low: '$418.75',
+                volume: '24.2M',
+                marketCap: '$3.15T',
+                pe: '35.78'
+            },
+            'GOOGL': {
+                open: '$165.12',
+                high: '$167.25',
+                low: '$164.45',
+                volume: '32.8M',
+                marketCap: '$2.12T',
+                pe: '25.34'
+            },
+            'AMZN': {
+                open: '$181.25',
+                high: '$183.64',
+                low: '$180.32',
+                volume: '45.1M',
+                marketCap: '$1.92T',
+                pe: '42.15'
+            },
+            'TSLA': {
+                open: '$173.45',
+                high: '$175.32',
+                low: '$168.87',
+                volume: '78.5M',
+                marketCap: '$548B',
+                pe: '58.32'
+            }
+        }[symbol] || {
+            open: '$100.00',
+            high: '$105.00',
+            low: '$98.00',
+            volume: '10M',
+            marketCap: '$500B',
+            pe: '20.00'
+        };
+        
+        // Update metric values in the DOM
+        const metricItems = document.querySelectorAll('.metric-item');
+        metricItems[0].querySelector('.metric-value').textContent = metrics.open;
+        metricItems[1].querySelector('.metric-value').textContent = metrics.high;
+        metricItems[2].querySelector('.metric-value').textContent = metrics.low;
+        metricItems[3].querySelector('.metric-value').textContent = metrics.volume;
+        metricItems[4].querySelector('.metric-value').textContent = metrics.marketCap;
+        metricItems[5].querySelector('.metric-value').textContent = metrics.pe;
+    }
+    
+    // Tab navigation functionality for watchlist
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+            // Remove active class from all tabs
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Add active class to clicked tab
+            this.classList.add('active');
+            
+            // You could load different watchlist data here
+            // For now, we'll just simulate a loading effect
+            const stockList = document.querySelector('.stock-list');
+            stockList.style.opacity = '0.5';
+            
+            setTimeout(() => {
+                stockList.style.opacity = '1';
+            }, 500);
+        });
+    });
+    
+    // Watchlist stock item selection
+    const stockListItems = document.querySelectorAll('.stock-list-item');
+    stockListItems.forEach(item => {
+        item.addEventListener('click', function() {
+            // Remove active class from all items
+            stockListItems.forEach(i => i.classList.remove('active'));
+            
+            // Add active class to clicked item
+            this.classList.add('active');
+            
+            // Get stock symbol
+            const symbol = this.querySelector('.stock-list-symbol').textContent;
+            
+            // Update main chart
+            const stockName = this.querySelector('.stock-list-name').textContent;
+            const stockLogo = this.querySelector('.mini-logo img').getAttribute('src');
+            
+            // Update the stock selector display
+            const mainStockLogo = document.querySelector('.stock-selector .stock-logo img');
+            const mainStockName = document.querySelector('.stock-selector .stock-name');
+            const mainStockSymbol = document.querySelector('.stock-selector .stock-symbol');
+            
+            mainStockLogo.setAttribute('src', stockLogo);
+            mainStockName.textContent = stockName;
+            mainStockSymbol.innerHTML = symbol + '<span class="stock-badge">NASDAQ</span>';
+            
+            // Update chart with new stock data
+            updateStockChart(symbol);
+        });
+    });
+    
+    // Time filter functionality for stock chart
+    const timeFilters = document.querySelectorAll('.time-filter .card-button');
+    timeFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            // Remove active class from all filters
+            timeFilters.forEach(f => f.classList.remove('active'));
+            
+            // Add active class to clicked filter
+            this.classList.add('active');
+            
+            // Update chart data based on time filter
+            const period = this.textContent;
+            updateChartPeriod(period);
+        });
+    });
+    
+    // Function to update chart data based on selected time period
+    function updateChartPeriod(period) {
+        // Add loading effect
+        chartOverlay.classList.add('visible');
+        
+        setTimeout(() => {
+            // Generate data points based on selected period
+            let dataPoints = 0;
+            let label = '';
+            
+            switch(period) {
+                case '1D':
+                    dataPoints = 24;
+                    label = 'Hourly';
+                    break;
+                case '1W':
+                    dataPoints = 7;
+                    label = 'Daily';
+                    break;
+                case '1M':
+                    dataPoints = 30;
+                    label = 'Daily';
+                    break;
+                case '3M':
+                    dataPoints = 90;
+                    label = 'Daily';
+                    break;
+                case '1Y':
+                    dataPoints = 12;
+                    label = 'Monthly';
+                    break;
+                case '5Y':
+                    dataPoints = 60;
+                    label = 'Monthly';
+                    break;
+                default:
+                    dataPoints = 30;
+                    label = 'Daily';
+            }
+            
+            // Generate new labels
+            stockChart.data.labels = Array.from({length: dataPoints}, (_, i) => i + 1);
+            
+            // Generate new data
+            const currentSymbol = document.querySelector('.stock-selector .stock-symbol').textContent.split('<')[0].trim();
+            stockChart.data.datasets[0].data = generateMockData(currentSymbol);
+            
+            // Update chart
+            stockChart.update();
+            
+            // Remove loading
+            chartOverlay.classList.remove('visible');
+        }, 800);
+    }
+    
+    // Performance card time filter functionality
+    const performanceFilters = document.querySelectorAll('.performance-card .card-button');
+    performanceFilters.forEach(filter => {
+        filter.addEventListener('click', function() {
+            // Remove active class from all filters
+            performanceFilters.forEach(f => f.classList.remove('active'));
+            
+            // Add active class to clicked filter
+            this.classList.add('active');
+            
+            // Update performance chart based on selected period
+            updatePerformanceChart(this.textContent);
+        });
+    });
+    
+    function updatePerformanceChart(period) {
+        // Generate different data based on the selected period
+        let portfolioData = [];
+        
+        switch(period) {
+            case '1M':
+                portfolioData = [
+                    68520, 68750, 68200, 69150, 69800, 70200, 69750, 70100, 71500, 71200,
+                    70400, 69800, 69500, 70300, 71200, 71800, 72500, 72100, 71400, 71000,
+                    71800, 72900, 72400, 71500, 71200, 72300, 73800, 74500, 74100, 74800
+                ];
+                break;
+            case '3M':
+                portfolioData = [
+                    65400, 66200, 67500, 68300, 69100, 68700, 69400, 70200, 71100, 70800,
+                    71500, 72300, 71900, 72400, 73200, 72800, 73500, 74200, 73800, 74500
+                ];
+                break;
+            case '1Y':
+                portfolioData = [
+                    58200, 59500, 61200, 62800, 64500, 63900, 65200, 66800, 68500, 69700,
+                    71200, 74800
+                ];
+                break;
+        }
+        
+        // Update chart data
+        performanceChart.data.datasets[0].data = portfolioData;
+        performanceChart.data.labels = Array.from({length: portfolioData.length}, (_, i) => i + 1);
+        performanceChart.update();
+    }
+    
+    // Toast notification functionality
+    const notificationToast = document.getElementById('notification-toast');
+    const toastCloseButton = document.querySelector('.toast-close');
+    
+    // Show toast notification after a short delay
+    setTimeout(() => {
+        notificationToast.classList.add('show');
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            notificationToast.classList.remove('show');
+        }, 5000);
+    }, 3000);
+    
+    // Close toast when button is clicked
+    toastCloseButton.addEventListener('click', function() {
+        notificationToast.classList.remove('show');
+    });
+});
+    </script>
+</body>
+</html>
