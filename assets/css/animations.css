@@ -263,9 +263,10 @@
 .signup-animation {
     position: absolute;
     width: 100%;
-    height: 175%;
+    height: 130%;
     background: linear-gradient(135deg, #0d508e 0%, #1e3c72 100%);
     overflow: hidden;
+    /* iska code inline css me bhi hai usko change krna pehle */
 }
 
 .bull-run {
