@@ -105,7 +105,7 @@
 }
 
 .btn:hover {
-    background: linear-gradient(90deg, #2563eb, #4338ca);
+    background: linear-gradient(90deg, #2563eb, #2563EB);
     transform: translateY(-1px);
 }
 

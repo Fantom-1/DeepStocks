@@ -155,6 +155,7 @@
         </aside>
 
         <!-- The popup overlay -->
+    <!-- The popup overlay -->
     <div class="popup-overlay" id="analyticsPopup">
         <div class="popup-container">
             <div class="popup-header">
@@ -162,14 +163,10 @@
                 <button class="popup-close" id="closePopup">&times;</button>
             </div>
             <div class="popup-body">
-                <div class="form-group">
-                    <label class="form-label" for="apiKey">Google AI Studio API Key</label>
-                    <input type="password" class="form-input" id="apiKey" placeholder="Enter your API key">
+                <div class="stock-display">
+                    Analyzing stock: <span class="stock-symbol" id="selectedStock">--</span>
                 </div>
-                <div class="form-group">
-                    <label class="form-label" for="stockSymbol">Stock Symbol</label>
-                    <input type="text" class="form-input" id="stockSymbol" placeholder="e.g., AAPL, MSFT, GOOG">
-                </div>
+                
                 <div class="form-group">
                     <label class="form-label" for="analysisType">Analysis Type</label>
                     <select class="form-select" id="analysisType">
@@ -194,6 +191,7 @@
             </div>
         </div>
     </div>
+
 
 
         <!-- Header -->

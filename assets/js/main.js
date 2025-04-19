@@ -72,7 +72,7 @@ function initMarketAnimations() {
     if (loginAnimation) {
         const neon = document.createElement('div');
         neon.className = 'neon-sign';
-        neon.textContent = 'Market Insights';
+        neon.textContent = 'DEEP STOCKS';
         loginAnimation.appendChild(neon);
     }
 }

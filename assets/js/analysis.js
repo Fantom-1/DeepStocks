@@ -1,5 +1,7 @@
- // Add click event to the Analytics link
- document.addEventListener('DOMContentLoaded', function() {
+// Set your Google AI Studio API key here
+const API_KEY = "AIzaSyDudD9Y3DOa9PBgyR8imuekqzteBQti12E";
+        
+document.addEventListener('DOMContentLoaded', function() {
     // Find the Analytics link
     const analyticsLinks = document.querySelectorAll('.nav-link');
     analyticsLinks.forEach(link => {
@@ -7,6 +9,18 @@
             link.classList.add('analytics-trigger');
             link.addEventListener('click', function(e) {
                 e.preventDefault();
+                
+                // Get stock value from search input
+                const searchInput = document.getElementById('stockSearchInput');
+                let stockSymbol = '';
+                
+                if (searchInput && searchInput.value.trim()) {
+                    stockSymbol = parseStockSymbol(searchInput.value);
+                    document.getElementById('selectedStock').textContent = stockSymbol;
+                } else {
+                    document.getElementById('selectedStock').textContent = "No stock selected";
+                }
+                
                 document.getElementById('analyticsPopup').style.display = 'flex';
             });
         }
@@ -28,13 +42,22 @@
     document.getElementById('analyzeBtn').addEventListener('click', analyzeStock);
 });
 
+// Extract stock symbol from search input
+function parseStockSymbol(input) {
+    // Basic extraction - assumes format like "AAPL - Apple Inc." or just "AAPL"
+    const matches = input.match(/^([A-Z]+)/);
+    if (matches && matches[1]) {
+        return matches[1];
+    }
+    return input.trim().split(' ')[0].toUpperCase(); // Fallback to first word
+}
+
 function analyzeStock() {
-    const apiKey = document.getElementById('apiKey').value;
-    const stockSymbol = document.getElementById('stockSymbol').value;
+    const stockSymbol = document.getElementById('selectedStock').textContent;
     const analysisType = document.getElementById('analysisType').value;
     
-    if (!apiKey || !stockSymbol) {
-        alert('Please enter both API key and stock symbol');
+    if (stockSymbol === "No stock selected" || stockSymbol === "--") {
+        alert('Please search for a stock first');
         return;
     }
     
@@ -42,8 +65,8 @@ function analyzeStock() {
     document.getElementById('loadingSpinner').style.display = 'block';
     document.getElementById('resultsContainer').style.display = 'none';
     
-    // Example API call to Google AI Studio
-    fetchStockAnalysis(apiKey, stockSymbol, analysisType)
+    // Using the API key defined at the top of the script
+    fetchStockAnalysis(API_KEY, stockSymbol, analysisType)
         .then(result => {
             // Hide spinner and show results
             document.getElementById('loadingSpinner').style.display = 'none';
