@@ -1,0 +1,403 @@
+/* Base Animation Keyframes */
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.05); }
+}
+
+@keyframes flicker {
+    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+    20%, 22%, 24%, 55% { opacity: 0.5; }
+}
+
+@keyframes colorShift {
+    0% { background-color: #2962ff; }
+    25% { background-color: #00c853; }
+    50% { background-color: #ffab00; }
+    75% { background-color: #ff5252; }
+    100% { background-color: #2962ff; }
+}
+
+@keyframes tickerScroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+@keyframes candlestickGrow {
+    0% { height: 0; opacity: 0; }
+    100% { height: var(--final-height); opacity: 1; }
+}
+
+/* Background Grid Animation */
+.market-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+    0% { background-position: 0 0; }
+    100% { background-position: 40px 40px; }
+}
+
+/* 3D Floating Elements */
+.floating-element {
+    position: absolute;
+    font-size: 2rem;
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3));
+    animation: float 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
+    will-change: transform;
+}
+
+/* Dynamic Candlestick Chart Animation */
+.candlestick-container {
+    position: absolute;
+    width: 80%;
+    height: 60%;
+    bottom: 10%;
+    left: 10%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+}
+
+.candlestick {
+    width: 12px;
+    background: linear-gradient(to top, #00c853, #2962ff);
+    border-radius: 4px;
+    position: relative;
+    transform-origin: bottom center;
+    animation: candlestickGrow 1.5s ease-out forwards,
+               candlestickPulse 4s ease-in-out infinite;
+    animation-delay: calc(var(--delay) * 0.2s);
+}
+
+@keyframes candlestickPulse {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(1.05); }
+}
+
+.candlestick::before {
+    content: '';
+    position: absolute;
+    width: 4px;
+    height: var(--wick-height);
+    background: white;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 100%;
+}
+
+/* Particle System Animation */
+.market-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.7);
+    animation: particleFloat linear infinite;
+    will-change: transform;
+}
+
+@keyframes particleFloat {
+    to { transform: translateY(-100vh); }
+}
+
+/* Market Ticker Animation */
+.market-ticker {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 10px 0;
+    overflow: hidden;
+    font-family: 'Courier New', monospace;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: tickerScroll 30s linear infinite;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin: 0 40px;
+    position: relative;
+}
+
+.ticker-item::after {
+    content: '•';
+    position: absolute;
+    right: -25px;
+}
+
+/* Neon Sign Animation */
+.neon-sign {
+    position: absolute;
+    top: 40px;
+    left: 57%;
+    transform: translateX(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 
+        0 0 5px #fff,
+        0 0 10px #fff,
+        0 0 20px #2962ff,
+        0 0 40px #2962ff,
+        0 0 80px #2962ff;
+    animation: flicker 3s infinite alternate;
+    opacity: 0;
+    animation-delay: 1s;
+}
+
+/* Circuit Board Animation */
+.circuit-board {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(90deg, rgba(41, 98, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(rgba(41, 98, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: circuitPulse 8s infinite alternate;
+}
+
+@keyframes circuitPulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 0.7; }
+}
+
+/* Digital Rain Animation */
+.digital-rain {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.digital-column {
+    position: absolute;
+    top: 0;
+    width: 1em;
+    height: 100%;
+    color: rgba(0, 200, 83, 0.8);
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    text-shadow: 0 0 5px rgba(0, 200, 83, 0.5);
+    animation: digitalFall linear infinite;
+}
+
+@keyframes digitalFall {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(100%); }
+}
+
+/* Holographic Grid Animation */
+.holographic-grid {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 50px 50px;
+    animation: gridPulse 6s infinite alternate;
+}
+
+@keyframes gridPulse {
+    0% { opacity: 0.3; transform: perspective(500px) rotateX(60deg) scale(1); }
+    100% { opacity: 0.7; transform: perspective(500px) rotateX(60deg) scale(1.1); }
+}
+
+/* Page-Specific Animations */
+
+/* Login Page Animations */
+.login-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    overflow: hidden;
+}
+
+.login-animation::before {
+    content: '';
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    top: -50%;
+    left: -50%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    animation: rotate 60s linear infinite;
+}
+
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Signup Page Animations */
+.signup-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f9b0f 0%, #1e3c72 100%);
+    overflow: hidden;
+}
+
+.bull-run {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(255,255,255,0.05) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(255,255,255,0.05) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(255,255,255,0.05) 75%);
+    background-size: 40px 40px;
+    animation: bullRun 20s linear infinite;
+}
+
+@keyframes bullRun {
+    from { background-position: 0 0; }
+    to { background-position: 80px 80px; }
+}
+
+/* Forgot Password Animations */
+.password-reset-animation {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #cd4666 0%, #e3462a 100%);
+    overflow: hidden;
+}
+
+.password-reset-animation::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at center, rgba(255,255,255,0.2) 0%, transparent 70%);
+    animation: pulse 4s ease infinite;
+}
+
+/* Form Element Animations */
+.form-group {
+    animation: formSlideIn 0.8s ease-out forwards;
+    opacity: 0;
+}
+
+@keyframes formSlideIn {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Delays for form groups */
+.form-group:nth-child(1) { animation-delay: 0.2s; }
+.form-group:nth-child(2) { animation-delay: 0.4s; }
+.form-group:nth-child(3) { animation-delay: 0.6s; }
+.form-group:nth-child(4) { animation-delay: 0.8s; }
+.form-group:nth-child(5) { animation-delay: 1s; }
+
+/* Button Animation */
+.auth-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.auth-btn::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+        to bottom right,
+        rgba(255,255,255,0) 45%,
+        rgba(255,255,255,0.8) 50%,
+        rgba(255,255,255,0) 55%
+    );
+    transform: rotate(30deg);
+    animation: shine 3s infinite;
+}
+
+@keyframes shine {
+    from { transform: translateX(-100%) rotate(30deg); }
+    to { transform: translateX(100%) rotate(30deg); }
+}
+
+/* Password Strength Animation */
+.password-strength {
+    height: 4px;
+    background: rgba(255,255,255,0.2);
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+}
+
+.strength-bar {
+    position: absolute;
+    height: 100%;
+    left: 0;
+    top: 0;
+    width: 0;
+    transition: width 0.5s ease, background-color 0.5s ease;
+}
+
+/* Floating Market Indicators */
+.market-indicator {
+    position: absolute;
+    font-size: 1.5rem;
+    opacity: 0.8;
+    animation: float 8s ease-in-out infinite, 
+               colorShift 10s linear infinite;
+    will-change: transform, color;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .candlestick-container {
+        width: 95%;
+        left: 2.5%;
+    }
+    
+    .neon-sign {
+        font-size: 2rem;
+    }
+    
+    .market-indicator {
+        font-size: 1rem;
+    }
+}
