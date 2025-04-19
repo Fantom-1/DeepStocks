@@ -798,7 +798,8 @@
         }
 
         .news-card {
-            grid-column: span 4;
+            font-family:'Courier New', Courier, monospace ;
+            grid-column: span 12;
             display: flex;
             flex-direction: column;
         }
@@ -822,6 +823,8 @@
             border-bottom: 1px solid var(--primary-light);
             cursor: pointer;
             transition: background-color 0.2s;
+            font-style: none;
+            color: white;
         }
 
         .news-item:hover {
@@ -851,8 +854,20 @@
             font-weight: 500;
             margin-bottom: 0.5rem;
             line-height: 1.4;
+            font-style: none;
+           color: white;
         }
-
+        .news-title a {
+            text-decoration: none; 
+            font-style: none;
+           color: white;
+        }
+    .news-description{
+        font-size: 0.775rem;
+            font-weight: 350;
+            margin-bottom: 0.5rem;
+           color: #94A3B8;
+    }
         .news-tags {
             display: flex;
             gap: 0.5rem;

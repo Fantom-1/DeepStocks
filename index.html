@@ -682,81 +682,28 @@
               </div>
 
               <!-- News Card -->
+
               <div class="card news-card">
-                  <div class="news-header">
-                      <div class="card-header">
-                          <div class="card-title">Latest News</div>
-                          <div class="card-actions">
-                              <button class="card-button">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                                      <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                                      <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                                  </svg>
-                              </button>
-                          </div>
-                      </div>
-                  </div>
-                  <div class="news-content">
-                      <ul class="news-list">
-                          <li class="news-item">
-                              <div class="news-source">
-                                  <div class="news-source-name">MarketWatch</div>
-                                  <div class="news-time">2 hours ago</div>
-                              </div>
-                              <div class="news-title">Apple's AI strategy could drive a new wave of iPhone upgrades, analysts say</div>
-                              <div class="news-tags">
-                                  <div class="news-tag">AAPL</div>
-                                  <div class="news-tag">AI</div>
-                                  <div class="news-tag">Tech</div>
-                              </div>
-                          </li>
-                          <li class="news-item">
-                              <div class="news-source">
-                                  <div class="news-source-name">CNBC</div>
-                                  <div class="news-time">4 hours ago</div>
-                              </div>
-                              <div class="news-title">NVIDIA surges as new AI chip announcement beats market expectations</div>
-                              <div class="news-tags">
-                                  <div class="news-tag">NVDA</div>
-                                  <div class="news-tag">Semiconductors</div>
-                              </div>
-                          </li>
-                          <li class="news-item">
-                              <div class="news-source">
-                                  <div class="news-source-name">Bloomberg</div>
-                                  <div class="news-time">6 hours ago</div>
-                              </div>
-                              <div class="news-title">Fed signals potential rate cut as inflation shows signs of cooling</div>
-                              <div class="news-tags">
-                                  <div class="news-tag">Fed</div>
-                                  <div class="news-tag">Economy</div>
-                              </div>
-                          </li>
-                          <li class="news-item">
-                              <div class="news-source">
-                                  <div class="news-source-name">Reuters</div>
-                                  <div class="news-time">8 hours ago</div>
-                              </div>
-                              <div class="news-title">Tesla delivers record number of vehicles in Q1, beats Wall Street estimates</div>
-                              <div class="news-tags">
-                                  <div class="news-tag">TSLA</div>
-                                  <div class="news-tag">Automotive</div>
-                              </div>
-                          </li>
-                          <li class="news-item">
-                              <div class="news-source">
-                                  <div class="news-source-name">WSJ</div>
-                                  <div class="news-time">10 hours ago</div>
-                              </div>
-                              <div class="news-title">Microsoft and OpenAI announce new partnership for enterprise AI solutions</div>
-                              <div class="news-tags">
-                                  <div class="news-tag">MSFT</div>
-                                  <div class="news-tag">AI</div>
-                              </div>
-                          </li>
-                      </ul>
-                  </div>
-              </div>
+                <div class="news-header">
+                    <div class="card-header">
+                        <div class="card-title">Latest News</div>
+                        <div class="card-actions">
+                            <button class="card-button">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                                    <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="news-content">
+                    <ul class="news-list" id="dynamic-news-list">
+                        <!-- News items will be dynamically loaded here -->
+                    </ul>
+                </div>
+            </div>
+<script src="./assets/js/news.js"></script>
           </div>
       </main>
   </div>
