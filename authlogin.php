@@ -44,11 +44,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             header("Location: index.html");
             exit();
         } else {
-            $error = "Password not match";
+            $error = "Password is incorrect";
         }
     } 
     else {
-        $error = "1 nhi he sasura";
+        $error = "Email is incorrect";
     }
 
     
