@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TradePulse | Advanced Stock Analytics</title>
 <link rel="stylesheet" href="./assets/css/index.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="./assets/js/charts.js"></script>
+<link rel="stylesheet" href="./assets/css/popup.css">
+
 </head>
 
 <body>
@@ -29,8 +33,7 @@
         <!-- Sidebar -->
         <aside class="sidebar">
             <div class="logo">
-                <div class="logo-icon">TP</div>
-                <div class="logo-text">TradePulse</div>
+                <div class="logo-text">Deep Stocks</div>
             </div>
 
             <div class="nav-section">
@@ -151,14 +154,58 @@
             </div>
         </aside>
 
+        <!-- The popup overlay -->
+    <div class="popup-overlay" id="analyticsPopup">
+        <div class="popup-container">
+            <div class="popup-header">
+                <div class="popup-title">Stock Fundamentals Analysis</div>
+                <button class="popup-close" id="closePopup">&times;</button>
+            </div>
+            <div class="popup-body">
+                <div class="form-group">
+                    <label class="form-label" for="apiKey">Google AI Studio API Key</label>
+                    <input type="password" class="form-input" id="apiKey" placeholder="Enter your API key">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="stockSymbol">Stock Symbol</label>
+                    <input type="text" class="form-input" id="stockSymbol" placeholder="e.g., AAPL, MSFT, GOOG">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="analysisType">Analysis Type</label>
+                    <select class="form-select" id="analysisType">
+                        <option value="financial_ratios">Financial Ratios</option>
+                        <option value="earnings_forecast">Earnings Forecast</option>
+                        <option value="growth_potential">Growth Potential</option>
+                        <option value="risk_assessment">Risk Assessment</option>
+                        <option value="comprehensive">Comprehensive Analysis</option>
+                    </select>
+                </div>
+                <button class="btn btn-block" id="analyzeBtn">Analyze Stock</button>
+                
+                <div class="loading-spinner" id="loadingSpinner">
+                    <div class="spinner"></div>
+                    <p>Analyzing fundamentals...</p>
+                </div>
+                
+                <div class="results-container" id="resultsContainer" style="display: none;">
+                    <div class="results-title">Analysis Results</div>
+                    <div id="analysisResults"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
         <!-- Header -->
         <header class="header">
             <div class="search-container">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                <input type="text" id="stockSearchInput" class="search-input" placeholder="Search for stocks, ETFs...">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                 </svg>
-                <input type="text" class="search-input" placeholder="Search for stocks, ETFs...">
-            </div>
+              </div>
+          
+            
             
             <div class="header-actions">
                 <button class="action-button">
@@ -269,124 +316,84 @@
                 </div>
 
                 <!-- Stock Chart Card -->
+             
+                
                 <div class="card stock-chart-card">
+                    <!-- Chart Controls -->
                     <div class="chart-controls">
                         <div class="stock-selector">
                             <div class="stock-logo">
-                                <img src="/api/placeholder/40/40" alt="Apple Logo">
+                                <img src="/api/placeholder/40/40" alt="Stock Logo" id="stockLogo">
                             </div>
                             <div class="stock-info">
-                                <div class="stock-name">Apple Inc.</div>
-                                <div class="stock-symbol">
+                                <div class="stock-name" id="stockName">Apple Inc.</div>
+                                <div class="stock-symbol" id="stockSymbol">
                                     AAPL
                                     <span class="stock-badge">NASDAQ</span>
                                 </div>
                             </div>
                         </div>
-
+                
                         <div class="stock-dropdown">
                             <button class="dropdown-btn" id="stockDropdownBtn">
                                 Change Stock
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/>
-                              </svg>
-                          </button>
-                          <div class="dropdown-content" id="stockDropdown">
-                              <div class="dropdown-item">
-                                  <div class="mini-logo">
-                                      <img src="/api/placeholder/32/32" alt="Apple Logo">
-                                  </div>
-                                  <div class="dropdown-item-info">
-                                      <div class="dropdown-item-name">Apple Inc.</div>
-                                      <div class="dropdown-item-symbol">AAPL</div>
-                                  </div>
-                              </div>
-                              <div class="dropdown-item">
-                                  <div class="mini-logo">
-                                      <img src="/api/placeholder/32/32" alt="Microsoft Logo">
-                                  </div>
-                                  <div class="dropdown-item-info">
-                                      <div class="dropdown-item-name">Microsoft Corp.</div>
-                                      <div class="dropdown-item-symbol">MSFT</div>
-                                  </div>
-                              </div>
-                              <div class="dropdown-item">
-                                  <div class="mini-logo">
-                                      <img src="/api/placeholder/32/32" alt="Google Logo">
-                                  </div>
-                                  <div class="dropdown-item-info">
-                                      <div class="dropdown-item-name">Alphabet Inc.</div>
-                                      <div class="dropdown-item-symbol">GOOGL</div>
-                                  </div>
-                              </div>
-                              <div class="dropdown-item">
-                                  <div class="mini-logo">
-                                      <img src="/api/placeholder/32/32" alt="Amazon Logo">
-                                  </div>
-                                  <div class="dropdown-item-info">
-                                      <div class="dropdown-item-name">Amazon.com Inc.</div>
-                                      <div class="dropdown-item-symbol">AMZN</div>
-                                  </div>
-                              </div>
-                              <div class="dropdown-item">
-                                  <div class="mini-logo">
-                                      <img src="/api/placeholder/32/32" alt="Tesla Logo">
-                                  </div>
-                                  <div class="dropdown-item-info">
-                                      <div class="dropdown-item-name">Tesla Inc.</div>
-                                      <div class="dropdown-item-symbol">TSLA</div>
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-
-                      <div class="time-filter">
-                          <button class="card-button">1D</button>
-                          <button class="card-button">1W</button>
-                          <button class="card-button active">1M</button>
-                          <button class="card-button">3M</button>
-                          <button class="card-button">1Y</button>
-                          <button class="card-button">5Y</button>
-                      </div>
-                  </div>
-
-                  <div class="chart-container">
-                      <canvas id="stockChart"></canvas>
-                      <div class="chart-overlay" id="chartOverlay">
-                          <div class="chart-loading">
-                              <div class="spinner"></div>
-                              <div>Loading chart data...</div>
-                          </div>
-                      </div>
-                  </div>
-
-                  <div class="stock-metrics">
-                      <div class="metric-item">
-                          <div class="metric-label">Open</div>
-                          <div class="metric-value">$173.28</div>
-                      </div>
-                      <div class="metric-item">
-                          <div class="metric-label">High</div>
-                          <div class="metric-value">$177.54</div>
-                      </div>
-                      <div class="metric-item">
-                          <div class="metric-label">Low</div>
-                          <div class="metric-value">$172.95</div>
-                      </div>
-                      <div class="metric-item">
-                          <div class="metric-label">Volume</div>
-                          <div class="metric-value">68.4M</div>
-                      </div>
-                      <div class="metric-item">
-                          <div class="metric-label">Market Cap</div>
-                          <div class="metric-value">$2.78T</div>
-                      </div>
-                      <div class="metric-item">
-                          <div class="metric-label">P/E Ratio</div>
-                          <div class="metric-value">29.45</div>
-                      </div>
-                  </div>
-              </div>
+                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
+                                </svg>
+                            </button>
+                            <div class="dropdown-content" id="stockDropdown"></div>
+                        </div>
+                
+                        <div class="time-filter">
+                            <button class="card-button">1D</button>
+                            <button class="card-button">1W</button>
+                            <button class="card-button active">1M</button>
+                            <button class="card-button">3M</button>
+                            <button class="card-button">1Y</button>
+                            <button class="card-button">5Y</button>
+                        </div>
+                    </div>
+                
+                    <!-- Chart Container -->
+                    <div class="chart-container">
+                        <canvas id="stockChart"></canvas>
+                        <div class="chart-overlay" id="chartOverlay">
+                            <div class="chart-loading">
+                                <div class="spinner"></div>
+                                <div>Loading chart data...</div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <!-- Stock Metrics -->
+                    <div class="stock-metrics">
+                        <div class="metric-item">
+                            <div class="metric-label">Open</div>
+                            <div class="metric-value" id="openValue">$173.28</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">High</div>
+                            <div class="metric-value" id="highValue">$177.54</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Low</div>
+                            <div class="metric-value" id="lowValue">$172.95</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Volume</div>
+                            <div class="metric-value" id="volumeValue">68.4M</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">Market Cap</div>
+                            <div class="metric-value" id="marketCapValue">$2.78T</div>
+                        </div>
+                        <div class="metric-item">
+                            <div class="metric-label">P/E Ratio</div>
+                            <div class="metric-value" id="peRatioValue">29.45</div>
+                        </div>
+                    </div>
+                </div>
+                
 
               <!-- Watchlist Card -->
               <div class="card watchlist-card">
@@ -707,7 +714,7 @@
           </div>
       </main>
   </div>
-
   <script src="./assets/js/index.js"></script>
+  <script src="./assets/js/analysis.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
   document.addEventListener("DOMContentLoaded", () => {
     const newsList = document.getElementById("dynamic-news-list");
 
-    fetch("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&time_from=20220410T0130&limit=1000&apikey=LGOEX0OWFN6FC833") // 🔁 Replace with your actual API endpoint
+    fetch("https://www.alphavantage.co/query?function=NEWS_SENTIMENT&time_from=20220410T0130&limit=50&apikey=8IGMSZ8QZQS3TZW7") // 🔁 Replace with your actual API endpoint
       .then(response => response.json())
       .then(data => {
         const feed = data.feed.slice(0, 7); // Top 5 items from the API response
@@ -46,5 +46,9 @@
       const diff = Math.floor((now - time) / (1000 * 60 * 60)); // in hours
       return diff < 1 ? "Just now" : `${diff} hour${diff > 1 ? "s" : ""} ago`;
     }
+
+    
   });
+
+  
 
