@@ -1,5 +1,5 @@
- /* Popup Styles */
- .popup-overlay {
+  /* Popup Styles */
+  .popup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -105,7 +105,7 @@
 }
 
 .btn:hover {
-    background: linear-gradient(90deg, #2563eb, #2563EB);
+    background: linear-gradient(90deg, #2563eb, #4338ca);
     transform: translateY(-1px);
 }
 
@@ -158,4 +158,42 @@
 
 .nav-link.analytics-trigger:hover {
     background-color: rgba(79, 70, 229, 0.1);
+}
+
+.stock-display {
+    background-color: rgba(30, 41, 59, 0.8);
+    border: 1px solid #4338ca;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #a5b4fc;
+}
+
+.stock-symbol {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.manual-input {
+    display: flex;
+    margin-bottom: 16px;
+    gap: 8px;
+}
+
+.manual-input .form-input {
+    flex-grow: 1;
+}
+
+.manual-input .btn {
+    padding: 10px 15px;
+    white-space: nowrap;
+}
+
+.no-stock-message {
+    margin-bottom: 16px;
+    color: #fb7185;
+    font-size: 14px;
+    text-align: center;
 }
