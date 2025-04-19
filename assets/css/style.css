@@ -332,7 +332,7 @@ body {
     display: block; /* This makes the error appear on a new line */
     color: #8d0707;
     font-size: 0.85rem;
-    margin-top: 6px;
+    margin-top: px;
 }
 
 /* Terms error message */
