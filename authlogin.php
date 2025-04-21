@@ -48,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } 
     else {
-        $error = "Email is incorrect";
+        echo "No user found with this credential";
     }
 
     

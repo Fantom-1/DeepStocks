@@ -3,7 +3,7 @@
 
 $host = 'localhost'; // or your host
 $username = 'root'; // your database username
-$password = 'Sneakers@83'; // your database password
+$password = ''; // your database password
 $database = 'market_insights_pro';
 
 // Create connection
