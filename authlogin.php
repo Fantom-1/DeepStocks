@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // }
             
             // Redirect to dashboard or home page
-            header("Location: index.html");
+            header("Location: index.php");
             exit();
         } else {
             $error = "Password is incorrect";
