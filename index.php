@@ -122,7 +122,7 @@ if (isset($_SESSION['user_fullname'])) {
                 <div class="nav-title">Account</div>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" id="sidebarProfileLink">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
                             </svg>
@@ -759,5 +759,45 @@ if (isset($_SESSION['user_fullname'])) {
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/analysis.js"></script>
   <script src="./assets/js/charts.js"></script>
+  <script src="./assets/js/profile.js"></script>
+  <!-- Profile Popup -->
+<div class="popup-overlay" id="profilePopup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <div class="popup-title">User Profile</div>
+            <button class="popup-close" id="closeProfilePopup">&times;</button>
+        </div>
+        <div class="popup-body">
+            <div class="profile-avatar-large">
+                <?php echo strtoupper($initials); ?>
+            </div>
+            <div class="profile-info">
+
+                <h3><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></h3>
+                <p class="profile-role" style ="color: #FFD700;">Premium Account</p>
+                
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Member Since: </span>
+                        <span class="detail-value"><?php echo date('F Y', strtotime('-1 year')); ?></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Portfolio Value: </span>
+                        <span class="detail-value">$20,214.14</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Account Status: </span>
+                        <span class="detail-value status-active" style ="color:rgb(30, 201, 44);">Active</span>
+                    </div>
+                </div>
+                
+                <div class="profile-actions">
+                    <!-- <button class="btn btn-outline">Edit Profile</button> -->
+                    <button class="btn btn-primary">Upgrade Plan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
