@@ -1,4 +1,4 @@
-const API_KEY = 'LGOEX0OWFN6FC833'; // Replace with your actual Alpha Vantage API key
+const API_KEY = 'M4OPY9UROHXDVM9N'; // Replace with your actual Alpha Vantage API key
 const baseURL = 'https://www.alphavantage.co/query?';
 
 let stockChart = null;
