@@ -1,5 +1,5 @@
-  /* Popup Styles */
-  .popup-overlay {
+/* Popup Styles */
+.popup-overlay {
     display: none;
     position: fixed;
     top: 0;
@@ -80,16 +80,6 @@
     outline: none;
     border-color: #818cf8;
     box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.2);
-}
-
-.form-select {
-    width: 100%;
-    padding: 10px 12px;
-    background-color: rgba(30, 41, 59, 0.8);
-    border: 1px solid #4338ca;
-    border-radius: 6px;
-    color: #e2e8f0;
-    font-size: 14px;
 }
 
 .btn {

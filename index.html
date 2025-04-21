@@ -6,7 +6,6 @@
     <title>TradePulse | Advanced Stock Analytics</title>
 <link rel="stylesheet" href="./assets/css/index.css">
 <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="./assets/js/charts.js"></script>
 <link rel="stylesheet" href="./assets/css/popup.css">
 
 </head>
@@ -153,52 +152,41 @@
                 </div>
             </div>
         </aside>
-
-        <div class="popup-overlay" id="analyticsPopup">
-            <div class="popup-container">
-                <div class="popup-header">
-                    <div class="popup-title">Stock Fundamentals Analysis</div>
-                    <button class="popup-close" id="closePopup">&times;</button>
-                </div>
-                <div class="popup-body">
-                    <div class="stock-display">
-                        Analyzing stock: <span class="stock-symbol" id="selectedStock">--</span>
-                    </div>
-                    
-                    <div id="noStockMessage" class="no-stock-message" style="display: none;">
-                        No stock selected. Please enter a stock symbol below.
-                    </div>
-                    
-                    <div id="manualStockInput" class="manual-input" style="display: none;">
-                        <input type="text" class="form-input" id="manualStock" placeholder="Enter stock symbol (e.g., AAPL)">
-                        <button class="btn" id="setStockBtn">Set Stock</button>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label class="form-label" for="analysisType">Analysis Type</label>
-                        <select class="form-select" id="analysisType">
-                            <option value="financial_ratios">Financial Ratios</option>
-                            <option value="earnings_forecast">Earnings Forecast</option>
-                            <option value="growth_potential">Growth Potential</option>
-                            <option value="risk_assessment">Risk Assessment</option>
-                            <option value="comprehensive">Comprehensive Analysis</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-block" id="analyzeBtn">Analyze Stock</button>
-                    
-                    <div class="loading-spinner" id="loadingSpinner">
-                        <div class="spinner"></div>
-                        <p>Analyzing fundamentals...</p>
-                    </div>
-                    
-                    <div class="results-container" id="resultsContainer" style="display: none;">
-                        <div class="results-title">Analysis Results</div>
-                        <div id="analysisResults"></div>
-                    </div>
-                </div>
+<!-- The popup overlay -->
+<div class="popup-overlay" id="analyticsPopup">
+    <div class="popup-container">
+        <div class="popup-header">
+            <div class="popup-title">Stock Fundamentals Analysis</div>
+            <button class="popup-close" id="closePopup">&times;</button>
+        </div>
+        <div class="popup-body">
+            <div class="stock-display">
+                Analyzing stock: <span class="stock-symbol" id="selectedStock">--</span>
+            </div>
+            
+            <div id="noStockMessage" class="no-stock-message" style="display: none;">
+                No stock selected. Please enter a stock symbol below.
+            </div>
+            
+            <div id="manualStockInput" class="manual-input" style="display: none;">
+                <input type="text" class="form-input" id="manualStock" placeholder="Enter stock symbol (e.g., AAPL)">
+                <button class="btn" id="setStockBtn">Set Stock</button>
+            </div>
+            
+            <button class="btn btn-block" id="analyzeBtn">Analyze Fundamentals</button>
+            
+            <div class="loading-spinner" id="loadingSpinner">
+                <div class="spinner"></div>
+                <p>Analyzing fundamentals...</p>
+            </div>
+            
+            <div class="results-container" id="resultsContainer" style="display: none;">
+                <div class="results-title">Analysis Results</div>
+                <div id="analysisResults"></div>
             </div>
         </div>
-    
+    </div>
+</div>
 
         <!-- Header -->
         <header class="header">
@@ -720,5 +708,6 @@
   </div>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/analysis.js"></script>
+  <script src="./assets/js/charts.js"></script>
 </body>
 </html>
