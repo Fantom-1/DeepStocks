@@ -716,9 +716,10 @@ if (isset($_SESSION['user_fullname'])) {
           </div>
       </main>
   </div>
+  <script src="./assets/js/charts.js"></script>
+  <script src="./assets/js/chartv.js"></script>
   <script src="./assets/js/index.js"></script>
   <script src="./assets/js/analysis.js"></script>
-  <script src="./assets/js/charts.js"></script>
   <script src="./assets/js/profile.js"></script>
   <!-- Profile Popup -->
 <div class="popup-overlay" id="profilePopup">
