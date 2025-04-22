@@ -1,4 +1,4 @@
-const API_KEY_CHARTS = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
+let API_KEY = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
 const BASE_URL = "https://api.twelvedata.com";
 const DEFAULT_STOCK = {
   symbol: "AAPL",
