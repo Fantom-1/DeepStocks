@@ -206,7 +206,7 @@ if (isset($_SESSION['user_fullname'])) {
                 <a href="#" class="nav-link" id="sidebarProfileLink">
                     <div class="avatar"><?php echo strtoupper($initials); ?></div></a>
                     <div class="user-info">
-                    <div class="user-name"><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></div>
+                    <div class="user-name" id="username"><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></div>
                     <div class="user-role" style="color: #D4AF37;">Premium Account</div>
                     </div>
                 </div>
@@ -290,13 +290,17 @@ if (isset($_SESSION['user_fullname'])) {
             <button class="card-button" data-range="1month" data-period="1825">5Y</button>
         </div>
     </div>
-                            <div class="card-actions" style=" margin-left:95%;" >
-                              <button class="card-button">
+
+    <script src="./assets/js/watchlist.js"></script>
+
+                            <div class="card-actions" style=" margin-left:95%;"  >
+                              <button class="card-button" onclick="submitStock()">
                                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
                                       <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                                   </svg>
                               </button>
                           </div>
+
 
     <!-- Chart Container -->
     <div class="chart-container">
@@ -323,7 +327,7 @@ if (isset($_SESSION['user_fullname'])) {
             <div class="metric-label">Low</div>
             <div class="metric-value" id="lowValue">$172.30</div>
         </div>
-        <div class="metric-item">
+        <div class="metric-item" id="Close">
             <div class="metric-label">Close</div>
             <div class="metric-value" id="closeValue">$175.88</div>
         </div>

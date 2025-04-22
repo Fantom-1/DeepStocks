@@ -2,7 +2,7 @@
 // db.php
 $host = 'localhost';
 $user = 'root';
-$password = '';
+$password = 'Sneakers@83';
 $database = 'stock_watchlist';
 
 $conn = new mysqli($host, $user, $password, $database);

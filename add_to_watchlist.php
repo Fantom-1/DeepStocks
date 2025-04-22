@@ -1,26 +1,28 @@
 <?php
-require_once 'db.php';
+$host = "127.0.0.1";
+$user = "root";
+$pass = "Sneakers@83"; // Your password if set
+$db = "stock_watchlist";
 
-header('Content-Type: application/json');
+$conn = new mysqli($host, $user, $pass, $db);
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = json_decode(file_get_contents('php://input'), true);
-    
-    $username = $conn->real_escape_string($data['username']);
-    // $stockName = $conn->real_escape_string($data['stockName']);
-    $stockSymbol = $conn->real_escape_string($data['stockSymbol']);
-    $closingPrice = $conn->real_escape_string($data['closingPrice']);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-    $sql = "INSERT INTO watchlist (username, stock_symbol, closing_price) 
-            VALUES ('$username', '$stockSymbol', '$closingPrice')";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $username = $conn->real_escape_string($_POST['username']);
+    $symbol = $conn->real_escape_string($_POST['symbol']);
+    $closingPrice = $conn->real_escape_string($_POST['closingPrice']);
+
+    $sql = "INSERT INTO watchlist (username, stock_symbol, closing_price, added_date)
+            VALUES ('$username', '$symbol', '$closingPrice', NOW())";
 
     if ($conn->query($sql) === TRUE) {
-        echo json_encode(['success' => true, 'message' => 'Added to watchlist']);
+        echo "Stock for $username ($symbol at $$closingPrice) added!";
     } else {
-        echo json_encode(['success' => false, 'message' => 'Error: ' . $conn->error]);
+        echo "Error: " . $conn->error;
     }
-} else {
-    echo json_encode(['success' => false, 'message' => 'Invalid request method']);
 }
 
 $conn->close();
