@@ -132,7 +132,7 @@
     <div class="card" onclick="showPopup(3)">
       <img src="member4.jpg" alt="Member 4">
       <h2>Yash</h2>
-      <p>Backend Guru</p>
+      <p>Backend Developer</p>
     </div>
     <div class="card" onclick="showPopup(4)">
       <img src="member5.jpg" alt="Member 5">
