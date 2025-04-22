@@ -1,4 +1,4 @@
-let API_KEY = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
+const API_KEY_CHARTS = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
 const BASE_URL = "https://api.twelvedata.com";
 const DEFAULT_STOCK = {
   symbol: "AAPL",
@@ -130,7 +130,7 @@ async function loadStockData(symbol, interval = "1day", period = "30") {
       const startDateStr = startDate.toISOString().split("T")[0];
 
       const response = await fetch(
-        `${BASE_URL}/time_series?symbol=${symbol}&interval=${interval}&apikey=${API_KEY}&start_date=${startDateStr}&end_date=${endDate}`
+        `${BASE_URL}/time_series?symbol=${symbol}&interval=${interval}&apikey=${API_KEY_CHARTS}&start_date=${startDateStr}&end_date=${endDate}`
       );
       data = await response.json();
 
