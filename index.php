@@ -24,10 +24,11 @@ if (isset($_SESSION['user_fullname'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deep Stocks | Advanced Stock Analytics</title>
+    <title>TradePulse | Advanced Stock Analytics</title>
 <link rel="stylesheet" href="./assets/css/index.css">
 <script type="module" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="./assets/css/popup.css">
+
 </head>
 
 <body>
@@ -59,7 +60,7 @@ if (isset($_SESSION['user_fullname'])) {
                 <div class="nav-title">Main</div>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="#" class="nav-link ">
+                        <a href="#" class="nav-link active">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
                             </svg>
@@ -67,7 +68,7 @@ if (isset($_SESSION['user_fullname'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" >
+                        <a href="#" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
                             </svg>
@@ -101,15 +102,18 @@ if (isset($_SESSION['user_fullname'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="aboutus.php" class="nav-link">
+                        <a href="#" class="nav-link">
                         <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3 -3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C14 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 2.08 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
-                        </svg>
+  <path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3 -3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5C14 14.17 10.33 13 8 13zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 2.08 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+</svg>
+
+
+
                             About US
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="support.php" class="nav-link">
+                        <a href="#" class="nav-link">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8 1a5 5 0 0 0-5 5v1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a6 6 0 1 1 12 0v6a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1V6a5 5 0 0 0-5-5z"/>
                             </svg>
@@ -127,7 +131,7 @@ if (isset($_SESSION['user_fullname'])) {
                         Open
                     </div>
                 </div>
-                <!-- <div class="market-status-time">04:30:45 PM EDT</div> -->
+                <div class="market-status-time">04:30:45 PM EDT</div>
                 <div class="market-status-list">
                     <div class="market-item">
                         <div class="market-name">S&P 500</div>
@@ -182,7 +186,7 @@ if (isset($_SESSION['user_fullname'])) {
 
         <!-- Header -->
         <header class="header">
-            <div class="search-container">
+            <div class="search-container" >
                 <input type="text" id="stockSearchInput" class="search-input" placeholder="Search for stocks, ETFs...">
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -202,12 +206,11 @@ if (isset($_SESSION['user_fullname'])) {
                         <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
                     </svg>
                 </button>
-                <div class="user-profile" id="userProfile">
-                <a href="#" class="nav-link" id="sidebarProfileLink">
-                    <div class="avatar"><?php echo strtoupper($initials); ?></div></a>
+                <div class="user-profile">
+                    <div class="avatar"><?php echo strtoupper($initials); ?></div>
                     <div class="user-info">
                     <div class="user-name"><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></div>
-                    <div class="user-role" style="color: #D4AF37;">Premium Account</div>
+                    <div class="user-role">Premium Account</div>
                     </div>
                 </div>
             </div>
@@ -221,7 +224,7 @@ if (isset($_SESSION['user_fullname'])) {
                     $hour = date('H');
                     echo ($hour < 12) ? 'morning' : (($hour < 17) ? 'afternoon' : 'evening');
                 ?>, 
-                <b style="font-weight: bold; color:#3B82F6; font-size:larger;"><?php echo htmlspecialchars(explode(' ', $_SESSION['user_fullname'])[0]); ?></b></div>
+                <b style="font-weight: bold; color:rgb(36, 198, 36);"><?php echo htmlspecialchars(explode(' ', $_SESSION['user_fullname'])[0]); ?></b></div>
                 <div class="date-time" id="liveDateTime"></div>
 
                 <script>
@@ -722,42 +725,38 @@ if (isset($_SESSION['user_fullname'])) {
   <script src="./assets/js/profile.js"></script>
   <!-- Profile Popup -->
 <div class="popup-overlay" id="profilePopup">
-    <div class="popup-container" style =" height: 375px">
+    <div class="popup-container">
         <div class="popup-header">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
-                            </svg>
             <div class="popup-title">User Profile</div>
             <button class="popup-close" id="closeProfilePopup">&times;</button>
         </div>
         <div class="popup-body">
-            <!-- <div class="profile-avatar-large">
+            <div class="profile-avatar-large">
                 <?php echo strtoupper($initials); ?>
-            </div> -->
+            </div>
             <div class="profile-info">
 
                 <h3><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></h3>
-                <p class="profile-role" style ="color: #FFD700;">Premium Account</p><br>
+                <p class="profile-role" style ="color: #FFD700;">Premium Account</p>
                 
                 <div class="profile-details">
                     <div class="detail-item">
                         <span class="detail-label">Member Since: </span>
                         <span class="detail-value"><?php echo date('F Y', strtotime('-1 year')); ?></span>
-                    </div><br>
+                    </div>
                     <div class="detail-item">
                         <span class="detail-label">Portfolio Value: </span>
                         <span class="detail-value">$20,214.14</span>
-                    </div><br>
+                    </div>
                     <div class="detail-item">
                         <span class="detail-label">Account Status: </span>
                         <span class="detail-value status-active" style ="color:rgb(30, 201, 44);">Active</span>
-                    </div><br>
+                    </div>
                 </div>
                 
                 <div class="profile-actions">
                     <!-- <button class="btn btn-outline">Edit Profile</button> -->
                     <button class="btn btn-primary">Upgrade Plan</button>
-                    <button class="btn btn-primary" style="margin-left: 10%;" onclick="window.location.href='logout.php'">Log Out</button>
                 </div>
             </div>
         </div>
