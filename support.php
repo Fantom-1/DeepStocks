@@ -84,7 +84,7 @@
                 <p style="color: rgb(58, 26, 26);">Enter your email and we'll contact you shortly</p>
             </div>
             
-            <form id="supportForm" action="send_support_email.php" class="auth-form" method="POST" style="gap: 1.5rem;">
+            <form id="supportForm" action="send_support_email.php" class="auth-form" method="post" style="gap: 1.5rem;">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-with-icon">
@@ -156,29 +156,30 @@
     
     submitBtn.disabled = true;
     submitBtn.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
+    
     successMessage.style.display = 'none';
     errorMessage.style.display = 'none';
     
     try {
         const formData = new FormData(this);
+        
         const response = await fetch('send_support_email.php', {
             method: 'POST',
             body: formData
         });
-
+        
         // Check if response is JSON
         const contentType = response.headers.get('content-type');
         if (!contentType || !contentType.includes('application/json')) {
-            const text = await response.text();
-            throw new Error(`Server returned: ${text}`);
+            throw new Error('Server returned non-JSON response');
         }
-
+        
         const data = await response.json();
         
         if (!response.ok) {
-            throw new Error(data.message || 'Server returned an error');
+            throw new Error(data.message || 'Server error');
         }
-
+        
         if (data.success) {
             successMessage.style.display = 'block';
             this.reset();
@@ -186,9 +187,9 @@
             throw new Error(data.message || 'Request failed');
         }
     } catch (error) {
-        console.error('Submission error:', error);
+        console.error('Error:', error);
+        errorMessage.textContent = error.message || 'There was an error submitting your request. Please try again later.';
         errorMessage.style.display = 'block';
-        errorMessage.innerHTML = 'There was an error processing your request. <br>Please try again later.';
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerHTML = 'Submit <i class="fas fa-paper-plane"></i>';
