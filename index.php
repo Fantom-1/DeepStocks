@@ -410,11 +410,6 @@ if (isset($_SESSION['user_fullname'])) {
                               </button>
                           </div>
                       </div>
-                      <div class="tab-nav">
-                          <div class="tab active">Tech</div>
-                          <div class="tab">Indices</div>
-                          <div class="tab">Growth</div>
-                      </div>
                   </div>
                   <div class="watchlist-content">
                       <ul class="stock-list">
@@ -547,7 +542,7 @@ if (isset($_SESSION['user_fullname'])) {
               <!-- Holdings Card -->
               <div class="card holdings-card">
                   <div class="card-header">
-                      <div class="card-title">Your Holdings</div>
+                      <div class="card-title">Trending Stocks</div>
                       <div class="card-actions">
                           <button class="card-button">
                               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
