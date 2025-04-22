@@ -105,7 +105,7 @@ const API_KEY = "AIzaSyDudD9Y3DOa9PBgyR8imuekqzteBQti12E";
                 document.getElementById('analysisResults').innerHTML = `<div style="color: #f87171;">Error: ${error.message}</div>`;
             }
         }
-        let Comments = "```html"
+        let Comments = ""
         async function fetchStockAnalysis(apiKey, stockSymbol) {
             try {
                 // Make the API call to Google AI Studio

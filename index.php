@@ -59,7 +59,7 @@ if (isset($_SESSION['user_fullname'])) {
                 <div class="nav-title">Main</div>
                 <ul class="nav-list">
                     <li class="nav-item">
-                        <a href="#" class="nav-link active">
+                        <a href="#" class="nav-link ">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
                             </svg>
@@ -67,7 +67,7 @@ if (isset($_SESSION['user_fullname'])) {
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="#" class="nav-link" >
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                 <path d="M0 0h1v15h15v1H0V0Zm14.817 3.113a.5.5 0 0 1 .07.704l-4.5 5.5a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61 4.15-5.073a.5.5 0 0 1 .704-.07Z"/>
                             </svg>
@@ -207,7 +207,7 @@ if (isset($_SESSION['user_fullname'])) {
                     <div class="avatar"><?php echo strtoupper($initials); ?></div></a>
                     <div class="user-info">
                     <div class="user-name"><?php echo htmlspecialchars($_SESSION['user_fullname']); ?></div>
-                    <div class="user-role">Premium Account</div>
+                    <div class="user-role" style="color: #D4AF37;">Premium Account</div>
                     </div>
                 </div>
             </div>
@@ -757,7 +757,7 @@ if (isset($_SESSION['user_fullname'])) {
                 <div class="profile-actions">
                     <!-- <button class="btn btn-outline">Edit Profile</button> -->
                     <button class="btn btn-primary">Upgrade Plan</button>
-                    <button class="btn btn-primary" style=" margin-left: 10%;">Log Out </button>
+                    <button class="btn btn-primary" style="margin-left: 10%;" onclick="window.location.href='logout.php'">Log Out</button>
                 </div>
             </div>
         </div>
