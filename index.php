@@ -131,7 +131,7 @@ if (isset($_SESSION['user_fullname'])) {
                         Open
                     </div>
                 </div>
-                <div class="market-status-time">04:30:45 PM EDT</div>
+                <!-- <div class="market-status-time">04:30:45 PM EDT</div> -->
                 <div class="market-status-list">
                     <div class="market-item">
                         <div class="market-name">S&P 500</div>
@@ -224,7 +224,7 @@ if (isset($_SESSION['user_fullname'])) {
                     $hour = date('H');
                     echo ($hour < 12) ? 'morning' : (($hour < 17) ? 'afternoon' : 'evening');
                 ?>, 
-                <b style="font-weight: bold; color:rgb(36, 198, 36);"><?php echo htmlspecialchars(explode(' ', $_SESSION['user_fullname'])[0]); ?></b></div>
+                <b style="font-weight: bold; color:#3B82F6; font-size:larger;"><?php echo htmlspecialchars(explode(' ', $_SESSION['user_fullname'])[0]); ?></b></div>
                 <div class="date-time" id="liveDateTime"></div>
 
                 <script>
