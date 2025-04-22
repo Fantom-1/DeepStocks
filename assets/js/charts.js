@@ -1,442 +1,250 @@
-// Alpha Vantage API configuration
-const ALPHA_VANTAGE_API_KEY = 'M4OPY9UROHXDVM9N'; // Replace with your actual API key
-const ALPHA_VANTAGE_BASE_URL = 'https://www.alphavantage.co/query';
-
-// Default stock data
+let API_KEY = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
+const BASE_URL = "https://api.twelvedata.com";
 const DEFAULT_STOCK = {
-  symbol: 'AAPL',
-  name: 'Apple Inc.',
-  exchange: 'NASDAQ'
+  symbol: "AAPL",
+  name: "Apple Inc.",
+  exchange: "NASDAQ",
 };
 
-// Chart.js instance
+// Chart and state variables
 let stockChart;
-
-// Stock data cache
+let currentStock = DEFAULT_STOCK;
+let currentRange = "1day";
+let currentPeriod = "30"; // Default to 1 month
 const stockDataCache = {};
 
+// DOM Elements
+const searchInput = document.getElementById("stockSearchInput");
+const stockNameEl = document.getElementById("stockName");
+const stockSymbolEl = document.getElementById("stockSymbol");
+const stockLogoEl = document.getElementById("stockLogo");
+const timeFilters = document.querySelectorAll(".time-filter");
+const chartOverlay = document.getElementById("chartOverlay");
+const loadingMessage = document.getElementById("loadingMessage");
+
 // Initialize the application
-document.addEventListener('DOMContentLoaded', () => {
-  // Initialize chart with default stock
-  initializeStockChart();
-  
-  // Load default stock data
-  loadStockData(DEFAULT_STOCK.symbol);
-  
-  // Setup event listeners
+document.addEventListener("DOMContentLoaded", () => {
+  initializeChart();
+  loadStockData(currentStock.symbol, currentRange, currentPeriod);
   setupEventListeners();
-  
-  // Initialize stock dropdown
-  initializeStockDropdown();
 });
 
+// Set up event listeners
+function setupEventListeners() {
+  // Search input
+  searchInput.addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      const query = searchInput.value.trim();
+      if (query) {
+        // For simplicity, we'll assume the user enters a symbol directly
+        const stock = {
+          symbol: query.toUpperCase(),
+          name: query.toUpperCase(), // Placeholder - in real app you'd fetch the name
+          exchange: "NYSE", // Placeholder
+        };
+        updateStockDisplay(stock);
+        loadStockData(stock.symbol, currentRange, currentPeriod);
+        searchInput.value = "";
+      }
+    }
+  });
+
+  // Time filter buttons
+  timeFilters.forEach((button) => {
+    button.addEventListener("click", () => {
+      timeFilters.forEach((btn) => btn.classList.remove("active"));
+      button.classList.add("active");
+      currentRange = button.dataset.range;
+      currentPeriod = button.dataset.period;
+      loadStockData(currentStock.symbol, currentRange, currentPeriod);
+    });
+  });
+}
+
 // Initialize Chart.js
-function initializeStockChart() {
-  const ctx = document.getElementById('stockChart').getContext('2d');
-  
+function initializeChart() {
+  const ctx = document.getElementById("stockChart").getContext("2d");
+
+  if (stockChart) {
+    stockChart.destroy();
+  }
+
   stockChart = new Chart(ctx, {
-    type: 'line',
+    type: "line",
     data: {
       labels: [],
-      datasets: [{
-        label: 'Stock Price',
-        data: [],
-        borderColor: '#4f46e5',
-        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-        borderWidth: 2,
-        pointRadius: 0,
-        pointHoverRadius: 5,
-        pointBackgroundColor: '#4f46e5',
-        tension: 0.1,
-        fill: true
-      }]
+      datasets: [
+        {
+          label: "Stock Price",
+          data: [],
+          borderColor: "#3B82F6",
+          backgroundColor: "rgba(59, 130, 246, 0.1)",
+          borderWidth: 2,
+          pointRadius: 0,
+          pointHoverRadius: 5,
+          pointBackgroundColor: "#3B82F6",
+          tension: 0.1,
+          fill: true,
+        },
+      ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
         tooltip: {
-          mode: 'index',
+          mode: "index",
           intersect: false,
           callbacks: {
-            label: function(context) {
-              return `$${context.parsed.y.toFixed(2)}`;
-            }
-          }
-        }
+            label: (context) => `$${context.parsed.y.toFixed(2)}`,
+          },
+        },
       },
       scales: {
-        x: {
-          grid: {
-            display: false
-          }
-        },
+        x: { grid: { display: false } },
         y: {
-          grid: {
-            color: 'rgba(0, 0, 0, 0.05)'
-          },
-          ticks: {
-            callback: function(value) {
-              return '$' + value;
-            }
-          }
-        }
-      }
-    }
+          grid: { color: "rgba(0, 0, 0, 0.05)" },
+          ticks: { callback: (value) => "$" + value },
+        },
+      },
+    },
   });
 }
 
-// Setup event listeners
-function setupEventListeners() {
-  // Time filter buttons
-  const timeFilterButtons = document.querySelectorAll('.time-filter .card-button');
-  timeFilterButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      // Remove active class from all buttons
-      timeFilterButtons.forEach(btn => btn.classList.remove('active'));
-      // Add active class to clicked button
-      button.classList.add('active');
-      
-      // Get current stock symbol
-      const currentSymbol = document.getElementById('stockSymbol').textContent.trim().split(' ')[0];
-      
-      // Reload data with new time range
-      loadStockData(currentSymbol, button.textContent);
-    });
-  });
-  
-  // Stock dropdown button
-  document.getElementById('stockDropdownBtn').addEventListener('click', () => {
-    document.getElementById('stockDropdown').classList.toggle('show');
-  });
-  
-  // Close dropdown when clicking outside
-  window.addEventListener('click', (event) => {
-    if (!event.target.matches('.dropdown-btn') && !event.target.matches('.dropdown-btn *')) {
-      const dropdowns = document.getElementsByClassName('dropdown-content');
-      for (let i = 0; i < dropdowns.length; i++) {
-        if (dropdowns[i].classList.contains('show')) {
-          dropdowns[i].classList.remove('show');
-        }
-      }
-    }
-  });
-  
-  // Search input
-  const searchInput = document.getElementById('stockSearchInput');
-  searchInput.addEventListener('keypress', (event) => {
-    if (event.key === 'Enter') {
-      const query = searchInput.value.trim();
-      if (query) {
-        searchStocks(query);
-      }
-    }
-  });
-  
-  // Search icon click
-  document.querySelector('.search-icon').addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    if (query) {
-      searchStocks(query);
-    }
-  });
-}
+// Load stock data from Twelve Data API
+async function loadStockData(symbol, interval = "1day", period = "30") {
+  showLoading("Loading chart data...");
 
-// Initialize stock dropdown with popular stocks
-function initializeStockDropdown() {
-  const popularStocks = [
-    { symbol: 'AAPL', name: 'Apple Inc.', exchange: 'NASDAQ' },
-    { symbol: 'MSFT', name: 'Microsoft Corporation', exchange: 'NASDAQ' },
-    { symbol: 'GOOGL', name: 'Alphabet Inc.', exchange: 'NASDAQ' },
-    { symbol: 'AMZN', name: 'Amazon.com Inc.', exchange: 'NASDAQ' },
-    { symbol: 'TSLA', name: 'Tesla, Inc.', exchange: 'NASDAQ' },
-    { symbol: 'META', name: 'Meta Platforms, Inc.', exchange: 'NASDAQ' },
-    { symbol: 'NVDA', name: 'NVIDIA Corporation', exchange: 'NASDAQ' },
-    { symbol: 'JPM', name: 'JPMorgan Chase & Co.', exchange: 'NYSE' }
-  ];
-  
-  const dropdown = document.getElementById('stockDropdown');
-  dropdown.innerHTML = '';
-  
-  popularStocks.forEach(stock => {
-    const item = document.createElement('div');
-    item.className = 'dropdown-item';
-    item.innerHTML = `
-      <div class="stock-item-info">
-        <div class="stock-item-name">${stock.name}</div>
-        <div class="stock-item-symbol">${stock.symbol} <span class="stock-badge">${stock.exchange}</span></div>
-      </div>
-    `;
-    
-    item.addEventListener('click', () => {
-      updateSelectedStock(stock);
-      dropdown.classList.remove('show');
-    });
-    
-    dropdown.appendChild(item);
-  });
-}
+  const cacheKey = `${symbol}-${interval}-${period}`;
 
-// Search for stocks using Alpha Vantage API
-async function searchStocks(query) {
-  showChartOverlay('Searching...');
-  
   try {
-    const response = await fetch(`${ALPHA_VANTAGE_BASE_URL}?function=SYMBOL_SEARCH&keywords=${encodeURIComponent(query)}&apikey=${ALPHA_VANTAGE_API_KEY}`);
-    const data = await response.json();
-    
-    if (data.bestMatches && data.bestMatches.length > 0) {
-      const bestMatch = data.bestMatches[0];
-      const stock = {
-        symbol: bestMatch['1. symbol'],
-        name: bestMatch['2. name'],
-        exchange: bestMatch['4. region']
-      };
-      
-      updateSelectedStock(stock);
-    } else {
-      showChartOverlay('No matching stocks found.');
-    }
-  } catch (error) {
-    console.error('Error searching for stocks:', error);
-    showChartOverlay('Error searching for stocks. Please try again.');
-  }
-}
+    let data = stockDataCache[cacheKey];
 
-// Update the selected stock
-function updateSelectedStock(stock) {
-  // Update stock info
-  document.getElementById('stockName').textContent = stock.name;
-  document.getElementById('stockSymbol').innerHTML = `${stock.symbol} <span class="stock-badge">${stock.exchange}</span>`;
-  
-  // Update logo (in real implementation, you'd use a logo API)
-  document.getElementById('stockLogo').src = `/api/placeholder/40/40?text=${stock.symbol}`;
-  
-  // Reset time filter buttons
-  const timeFilterButtons = document.querySelectorAll('.time-filter .card-button');
-  timeFilterButtons.forEach(btn => btn.classList.remove('active'));
-  document.querySelector('.time-filter .card-button[innerText="1M"]').classList.add('active');
-  
-  // Load stock data
-  loadStockData(stock.symbol, '1M');
-}
+    if (!data) {
+      const now = new Date();
+      const endDate = now.toISOString().split("T")[0];
 
-// Load stock data from Alpha Vantage API
-async function loadStockData(symbol, timeRange = '1M') {
-  showChartOverlay('Loading chart data...');
-  
-  let apiFunction, outputSize;
-  switch (timeRange) {
-    case '1D':
-      apiFunction = 'TIME_SERIES_INTRADAY';
-      interval = '5min';
-      outputSize = 'compact';
-      break;
-    case '1W':
-      apiFunction = 'TIME_SERIES_DAILY';
-      outputSize = 'compact';
-      break;
-    case '1M':
-    case '3M':
-      apiFunction = 'TIME_SERIES_DAILY';
-      outputSize = 'compact';
-      break;
-    case '1Y':
-    case '5Y':
-      apiFunction = 'TIME_SERIES_WEEKLY';
-      outputSize = 'full';
-      break;
-    default:
-      apiFunction = 'TIME_SERIES_DAILY';
-      outputSize = 'compact';
-  }
-  
-  const cacheKey = `${symbol}-${timeRange}`;
-  
-  try {
-    let data;
-    
-    // Check cache first
-    if (stockDataCache[cacheKey]) {
-      data = stockDataCache[cacheKey];
-    } else {
-      // Fetch from API if not in cache
-      let url = `${ALPHA_VANTAGE_BASE_URL}?function=${apiFunction}&symbol=${symbol}&outputsize=${outputSize}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-      
-      if (apiFunction === 'TIME_SERIES_INTRADAY') {
-        url += `&interval=${interval}`;
-      }
-      
-      const response = await fetch(url);
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - parseInt(period));
+      const startDateStr = startDate.toISOString().split("T")[0];
+
+      const response = await fetch(
+        `${BASE_URL}/time_series?symbol=${symbol}&interval=${interval}&apikey=${API_KEY}&start_date=${startDateStr}&end_date=${endDate}`
+      );
       data = await response.json();
-      
-      // Store in cache
+
+      if (data.code || data.status === "error") {
+        throw new Error(data.message || "Error fetching data");
+      }
+
       stockDataCache[cacheKey] = data;
     }
-    
-    // Update chart with new data
-    updateChartWithData(data, timeRange);
-    
-    // Fetch and update company overview for metrics
-    await updateStockMetrics(symbol);
-    
-    hideChartOverlay();
+
+    updateChart(data, interval, period);
+    updateStockMetrics(data);
+    hideLoading();
   } catch (error) {
-    console.error('Error loading stock data:', error);
-    showChartOverlay('Error loading stock data. Please try again.');
+    console.error("Data load error:", error);
+    showLoading("Error loading stock data");
+    setTimeout(hideLoading, 2000);
   }
 }
 
-// Update chart with new data
-function updateChartWithData(data, timeRange) {
-  let timeSeriesKey;
-  
-  // Determine the time series key based on the API function
-  if (data['Time Series (5min)']) {
-    timeSeriesKey = 'Time Series (5min)';
-  } else if (data['Time Series (Daily)']) {
-    timeSeriesKey = 'Time Series (Daily)';
-  } else if (data['Weekly Time Series']) {
-    timeSeriesKey = 'Weekly Time Series';
-  } else {
-    showChartOverlay('No data available for this stock.');
+// Update chart with data
+function updateChart(data, interval, period) {
+  if (!data.values || data.values.length === 0) {
+    showLoading("No data available");
+    setTimeout(hideLoading, 2000);
     return;
   }
-  
-  const timeSeries = data[timeSeriesKey];
-  const dates = Object.keys(timeSeries).sort();
-  
-  // Filter dates based on selected time range
-  let filteredDates = dates;
-  const now = new Date();
-  
-  switch (timeRange) {
-    case '1D':
-      filteredDates = dates.filter(date => {
-        const dateObj = new Date(date);
-        return dateObj.getDate() === now.getDate() && 
-               dateObj.getMonth() === now.getMonth() && 
-               dateObj.getFullYear() === now.getFullYear();
+
+  // Process data
+  const values = data.values.reverse(); // Reverse to get chronological order
+  const labels = values.map((item) => {
+    const date = new Date(item.datetime);
+
+    if (period === "1") {
+      // Today
+      return date.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
       });
-      break;
-    case '1W':
-      const oneWeekAgo = new Date(now);
-      oneWeekAgo.setDate(now.getDate() - 7);
-      filteredDates = dates.filter(date => new Date(date) >= oneWeekAgo);
-      break;
-    case '1M':
-      const oneMonthAgo = new Date(now);
-      oneMonthAgo.setMonth(now.getMonth() - 1);
-      filteredDates = dates.filter(date => new Date(date) >= oneMonthAgo);
-      break;
-    case '3M':
-      const threeMonthsAgo = new Date(now);
-      threeMonthsAgo.setMonth(now.getMonth() - 3);
-      filteredDates = dates.filter(date => new Date(date) >= threeMonthsAgo);
-      break;
-    case '1Y':
-      const oneYearAgo = new Date(now);
-      oneYearAgo.setFullYear(now.getFullYear() - 1);
-      filteredDates = dates.filter(date => new Date(date) >= oneYearAgo);
-      break;
-    case '5Y':
-      const fiveYearsAgo = new Date(now);
-      fiveYearsAgo.setFullYear(now.getFullYear() - 5);
-      filteredDates = dates.filter(date => new Date(date) >= fiveYearsAgo);
-      break;
-  }
-  
-  // Format dates for display
-  const formattedDates = filteredDates.map(date => {
-    const dateObj = new Date(date);
-    return timeRange === '1D' ? 
-      dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 
-      dateObj.toLocaleDateString([], { month: 'short', day: 'numeric' });
+    } else if (period === "5" || period === "30") {
+      // 5 days or 1 month
+      return date.toLocaleDateString([], { month: "short", day: "numeric" });
+    } else {
+      // 1 year
+      return date.toLocaleDateString([], { month: "short", year: "2-digit" });
+    }
   });
-  
-  // Get close prices
-  const closePrices = filteredDates.map(date => {
-    return parseFloat(timeSeries[date]['4. close']);
-  });
-  
-  // Update chart data
-  stockChart.data.labels = formattedDates;
+
+  const closePrices = values.map((item) => parseFloat(item.close));
+
+  // Update chart
+  stockChart.data.labels = labels;
   stockChart.data.datasets[0].data = closePrices;
   stockChart.update();
 }
 
 // Update stock metrics
-async function updateStockMetrics(symbol) {
-  try {
-    // Fetch company overview
-    const response = await fetch(`${ALPHA_VANTAGE_BASE_URL}?function=OVERVIEW&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
-    const overview = await response.json();
-    
-    // Fetch quote endpoint for latest price data
-    const quoteResponse = await fetch(`${ALPHA_VANTAGE_BASE_URL}?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`);
-    const quoteData = await quoteResponse.json();
-    const quote = quoteData['Global Quote'];
-    
-    // Update metrics
-    if (quote) {
-      document.getElementById('openValue').textContent = formatCurrency(quote['02. open']);
-      document.getElementById('highValue').textContent = formatCurrency(quote['03. high']);
-      document.getElementById('lowValue').textContent = formatCurrency(quote['04. low']);
-      document.getElementById('volumeValue').textContent = formatVolume(quote['06. volume']);
-    }
-    
-    if (overview) {
-      document.getElementById('marketCapValue').textContent = formatMarketCap(overview.MarketCapitalization);
-      document.getElementById('peRatioValue').textContent = overview.PERatio ? parseFloat(overview.PERatio).toFixed(2) : 'N/A';
-    }
-  } catch (error) {
-    console.error('Error updating stock metrics:', error);
-  }
+function updateStockMetrics(data) {
+  if (!data.values || data.values.length === 0) return;
+
+  const latest = data.values[0];
+  const previous = data.values[1] || latest;
+
+  const change = (
+    ((latest.close - previous.close) / previous.close) *
+    100
+  ).toFixed(2);
+  const changeClass = change >= 0 ? "positive" : "negative";
+
+  document.getElementById("openValue").textContent = formatCurrency(
+    latest.open
+  );
+  document.getElementById("highValue").textContent = formatCurrency(
+    latest.high
+  );
+  document.getElementById("lowValue").textContent = formatCurrency(latest.low);
+  document.getElementById("closeValue").textContent = formatCurrency(
+    latest.close
+  );
+  document.getElementById("volumeValue").textContent = formatVolume(
+    latest.volume
+  );
+
+  const changeEl = document.getElementById("changeValue");
+  changeEl.textContent = `${change >= 0 ? "+" : ""}${change}%`;
+  changeEl.className = `metric-value ${changeClass}`;
 }
 
-// Helper function to show chart overlay
-function showChartOverlay(message) {
-  const overlay = document.getElementById('chartOverlay');
-  overlay.style.display = 'flex';
-  overlay.querySelector('.chart-loading div:last-child').textContent = message;
+// Update stock display
+function updateStockDisplay(stock) {
+  currentStock = stock;
+  stockNameEl.textContent = stock.name;
+  stockSymbolEl.textContent = `${stock.symbol} • ${stock.exchange}`;
+  stockLogoEl.textContent = stock.symbol.charAt(0);
 }
 
-// Helper function to hide chart overlay
-function hideChartOverlay() {
-  document.getElementById('chartOverlay').style.display = 'none';
+// Helper functions
+function showLoading(message) {
+  loadingMessage.textContent = message;
+  chartOverlay.classList.remove("hidden");
 }
 
-// Format currency values
+function hideLoading() {
+  chartOverlay.classList.add("hidden");
+}
+
 function formatCurrency(value) {
-  return '$' + parseFloat(value).toFixed(2);
+  return "$" + parseFloat(value).toFixed(2);
 }
 
-// Format volume values (e.g., 68.4M)
 function formatVolume(value) {
   const num = parseInt(value);
-  if (num >= 1000000000) {
-    return (num / 1000000000).toFixed(1) + 'B';
-  } else if (num >= 1000000) {
-    return (num / 1000000).toFixed(1) + 'M';
-  } else if (num >= 1000) {
-    return (num / 1000).toFixed(1) + 'K';
-  }
+  if (num >= 1000000000) return (num / 1000000000).toFixed(1) + "B";
+  if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+  if (num >= 1000) return (num / 1000).toFixed(1) + "K";
   return num.toString();
 }
-
-// Format market cap values (e.g., $2.78T)
-function formatMarketCap(value) {
-  const num = parseInt(value);
-  if (num >= 1000000000000) {
-    return '$' + (num / 1000000000000).toFixed(2) + 'T';
-  } else if (num >= 1000000000) {
-    return '$' + (num / 1000000000).toFixed(2) + 'B';
-  } else if (num >= 1000000) {
-    return '$' + (num / 1000000).toFixed(2) + 'M';
-  }
-  return '$' + num.toString();
-}
-

@@ -186,7 +186,7 @@ if (isset($_SESSION['user_fullname'])) {
 
         <!-- Header -->
         <header class="header">
-            <div class="search-container">
+            <div class="search-container" id="stockSearchInput" >
                 <input type="text" id="stockSearchInput" class="search-input" placeholder="Search for stocks, ETFs...">
                 <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
                   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
@@ -332,84 +332,72 @@ if (isset($_SESSION['user_fullname'])) {
                     </div>
                 </div>
 
-                <!-- Stock Chart Card -->
-             
-                
                 <div class="card stock-chart-card">
-                    <!-- Chart Controls -->
-                    <div class="chart-controls">
-                        <div class="stock-selector">
-                            <div class="stock-logo">
-                                <img src="/api/placeholder/40/40" alt="Stock Logo" id="stockLogo">
-                            </div>
-                            <div class="stock-info">
-                                <div class="stock-name" id="stockName">Apple Inc.</div>
-                                <div class="stock-symbol" id="stockSymbol">
-                                    AAPL
-                                    <span class="stock-badge">NASDAQ</span>
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="stock-dropdown">
-                            <button class="dropdown-btn" id="stockDropdownBtn">
-                                Change Stock
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"></path>
-                                </svg>
-                            </button>
-                            <div class="dropdown-content" id="stockDropdown"></div>
-                        </div>
-                
-                        <div class="time-filter">
-                            <button class="card-button">1D</button>
-                            <button class="card-button">1W</button>
-                            <button class="card-button active">1M</button>
-                            <button class="card-button">3M</button>
-                            <button class="card-button">1Y</button>
-                            <button class="card-button">5Y</button>
-                        </div>
-                    </div>
-                
-                    <!-- Chart Container -->
-                    <div class="chart-container">
-                        <canvas id="stockChart"></canvas>
-                        <div class="chart-overlay" id="chartOverlay">
-                            <div class="chart-loading">
-                                <div class="spinner"></div>
-                                <div>Loading chart data...</div>
-                            </div>
-                        </div>
-                    </div>
-                
-                    <!-- Stock Metrics -->
-                    <div class="stock-metrics">
-                        <div class="metric-item">
-                            <div class="metric-label">Open</div>
-                            <div class="metric-value" id="openValue">$173.28</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">High</div>
-                            <div class="metric-value" id="highValue">$177.54</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">Low</div>
-                            <div class="metric-value" id="lowValue">$172.95</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">Volume</div>
-                            <div class="metric-value" id="volumeValue">68.4M</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">Market Cap</div>
-                            <div class="metric-value" id="marketCapValue">$2.78T</div>
-                        </div>
-                        <div class="metric-item">
-                            <div class="metric-label">P/E Ratio</div>
-                            <div class="metric-value" id="peRatioValue">29.45</div>
-                        </div>
-                    </div>
+    <!-- Chart Controls -->
+    <div class="chart-controls">
+        <!-- Stock Selector -->
+        <div class="stock-selector">
+            <div class="stock-logo" id="stockLogo">A</div>
+            <div class="stock-info">
+                <div class="stock-name" id="stockName">Apple Inc.</div>
+                <div class="stock-symbol" id="stockSymbol">
+                    AAPL <span class="stock-badge">NASDAQ</span>
                 </div>
+            </div>
+        </div>
+
+        <!-- Search Input -->
+
+        <!-- Time Filters -->
+        <div class="time-filter">
+            <button class="card-button" data-range="1min" data-period="1">1D</button>
+            <button class="card-button" data-range="5min" data-period="5">1W</button>
+            <button class="card-button active" data-range="1day" data-period="30">1M</button>
+            <button class="card-button" data-range="1day" data-period="90">3M</button>
+            <button class="card-button" data-range="1week" data-period="365">1Y</button>
+            <button class="card-button" data-range="1month" data-period="1825">5Y</button>
+        </div>
+    </div>
+
+    <!-- Chart Container -->
+    <div class="chart-container">
+        <canvas id="stockChart"></canvas>
+        <div class="chart-overlay hidden" id="chartOverlay">
+            <div class="chart-loading">
+                <div class="spinner"></div>
+                <div id="loadingMessage">Loading chart data...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stock Metrics -->
+    <div class="stock-metrics">
+        <div class="metric-item">
+            <div class="metric-label">Open</div>
+            <div class="metric-value" id="openValue">$173.28</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-label">High</div>
+            <div class="metric-value" id="highValue">$177.54</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-label">Low</div>
+            <div class="metric-value" id="lowValue">$172.30</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-label">Close</div>
+            <div class="metric-value" id="closeValue">$175.88</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-label">Volume</div>
+            <div class="metric-value" id="volumeValue">89.2M</div>
+        </div>
+        <div class="metric-item">
+            <div class="metric-label">Change</div>
+            <div class="metric-value positive" id="changeValue">+1.23%</div>
+        </div>
+    </div>
+</div>
                 
 
               <!-- Watchlist Card -->
