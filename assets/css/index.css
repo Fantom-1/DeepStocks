@@ -277,6 +277,7 @@
           
           .action-button svg {
             transition: all 0.2s ease;
+            color: #CBD5E1;
           }
           
           /* Optional: Add a notification dot */
