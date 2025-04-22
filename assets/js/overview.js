@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const apiKey = '201909f0f1be48699ffd41984000f1e0';
+    const apiKey = '201909f0f1be48699ffd41984000f1e0'; //Yash's API
     const allSymbols = [
         'AAPL', 'TSLA', 'GOOGL', 'AMZN', 'MSFT',
         'META', 'NFLX', 'NVDA', 'ADBE', 'INTC',
