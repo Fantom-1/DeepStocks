@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About Us - Sexy Team Cards</title>
+  <title>About Us - Team Cards</title>
   <style>
     * {
       box-sizing: border-box;
@@ -112,7 +112,7 @@
   </style>
 </head>
 <body>
-  <h1>Meet Our Sexy Team</h1>
+  <h1>Meet Our Team</h1>
   <div class="card-container">
     <div class="card" onclick="showPopup(0)">
       <img src="member1.jpg" alt="Member 1">
