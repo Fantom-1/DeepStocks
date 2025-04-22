@@ -84,7 +84,7 @@
                 <p style="color: rgb(58, 26, 26);">Enter your email and we'll contact you shortly</p>
             </div>
             
-            <form id="supportForm" class="auth-form" style="gap: 1.5rem;">
+            <form id="supportForm" action="send_support_email.php" class="auth-form" method="POST" style="gap: 1.5rem;">
                 <div class="form-group">
                     <label for="email">Email</label>
                     <div class="input-with-icon">
@@ -106,7 +106,7 @@
                 </div>
                 
                 <button type="submit" class="btn auth-btn" id="submitBtn">Submit <i class="fas fa-paper-plane"></i></button>
-                
+
                 <div id="successMessage" class="success-message">
                     Thank you! Your support request has been submitted. We'll contact you soon.
                 </div>

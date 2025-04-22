@@ -44,7 +44,7 @@ try {
 
     // Send email
     $sent = mail($to, $subject, $body, $headerString);
-    
+    var_dump($sent);
     if (!$sent) {
         throw new RuntimeException('Unable to send email. Please try again later.');
     }
