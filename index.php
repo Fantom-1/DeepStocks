@@ -22,6 +22,7 @@ if (isset($_SESSION['user_fullname'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="icon" type="image/x-icon" href="./assets/logo.png" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep Stocks | Advanced Stock Analytics</title>
@@ -255,9 +256,8 @@ if (isset($_SESSION['user_fullname'])) {
                     <div class="card-header">
                         <div class="card-title">Market Overview</div>
                         <div class="card-actions">
-                            <button class="card-button active">US Markets</button>
-                            <button class="card-button">Global</button>
-                            <button class="card-button">Crypto</button>
+                            <button class="card-button active">Markets</button>
+                           
                         </div>
                     </div>
                     <div class="market-overview">
