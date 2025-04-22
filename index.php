@@ -329,7 +329,7 @@ if (isset($_SESSION['user_fullname'])) {
                     </div>
                 </div>
 
-                <div class="card stock-chart-card">
+                <div class="card stock-chart-card" >
     <!-- Chart Controls -->
     <div class="chart-controls">
         <!-- Stock Selector -->
@@ -342,7 +342,7 @@ if (isset($_SESSION['user_fullname'])) {
                 </div>
             </div>
         </div>
-
+        
         <!-- Search Input -->
 
         <!-- Time Filters -->
@@ -355,6 +355,13 @@ if (isset($_SESSION['user_fullname'])) {
             <button class="card-button" data-range="1month" data-period="1825">5Y</button>
         </div>
     </div>
+                            <div class="card-actions" style=" margin-left:95%;" >
+                              <button class="card-button">
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
+                                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                                  </svg>
+                              </button>
+                          </div>
 
     <!-- Chart Container -->
     <div class="chart-container">
@@ -402,13 +409,6 @@ if (isset($_SESSION['user_fullname'])) {
                   <div class="watchlist-header">
                       <div class="card-header">
                           <div class="card-title">Watchlists</div>
-                          <div class="card-actions">
-                              <button class="card-button">
-                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                                      <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                                  </svg>
-                              </button>
-                          </div>
                       </div>
                   </div>
                   <div class="watchlist-content">
