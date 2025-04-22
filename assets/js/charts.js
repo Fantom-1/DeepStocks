@@ -1,4 +1,4 @@
-const API_KEY_CHARTS = "201909f0f1be48699ffd41984000f1e0"; // Twelve Data API key
+const API_KEY_CHARTS = "5b0f6617c1af44e582139a2f8a55d1a8"; // Ashwin 2 api key
 const BASE_URL = "https://api.twelvedata.com";
 const DEFAULT_STOCK = {
   symbol: "AAPL",

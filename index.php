@@ -480,11 +480,8 @@ if (isset($_SESSION['user_fullname'])) {
                       <div class="card-title">Trending Stocks</div>
                       <div class="card-actions">
                           <button class="card-button">
-                              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M10.5 1a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4H1.5a.5.5 0 0 1 0-1H10V1.5a.5.5 0 0 1 .5-.5z"/>
-                                  <path fill-rule="evenodd" d="M.146 4.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 3.5H5.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708l-3-3z"/>
-                              </svg>
-                              Export
+                             
+                            
                           </button>
                       </div>
                   </div>
@@ -492,10 +489,10 @@ if (isset($_SESSION['user_fullname'])) {
                       <thead>
                           <tr>
                               <th>Asset</th>
-                              <th>Quantity</th>
-                              <th>Avg. Price</th>
+                              
+                            
                               <th>Current Price</th>
-                              <th>Value</th>
+                              
                               <th>Return</th>
                               <th>Allocation</th>
                           </tr>
@@ -619,6 +616,7 @@ if (isset($_SESSION['user_fullname'])) {
                       </tbody>
                   </table>
               </div>
+              <script src="./assets/js/trends.js"></script>
 
               <!-- News Card -->
 
