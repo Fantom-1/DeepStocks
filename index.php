@@ -22,8 +22,7 @@ if (isset($_SESSION['user_fullname'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<link rel="icon" type="image/x-icon" href="./assets/logo.png" />
-    <meta charset="UTF-8">
+<link rel="icon" type="image/png" sizes="32x32" href="./assets/logo.png">    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deep Stocks | Advanced Stock Analytics</title>
 <link rel="stylesheet" href="./assets/css/index.css">
@@ -251,83 +250,19 @@ if (isset($_SESSION['user_fullname'])) {
             </div>
 
             <div class="dashboard-grid">
-                <!-- Market Overview Card -->
-                <div class="card market-overview-card">
-                    <div class="card-header">
-                        <div class="card-title">Market Overview</div>
-                        <div class="card-actions">
-                            <button class="card-button active">Markets</button>
-                           
-                        </div>
-                    </div>
-                    <div class="market-overview">
-                        <div class="market-card">
-                            <div class="market-card-header">
-                                <div class="market-card-name">S&P 500</div>
-                                <div class="market-card-symbol">SPY</div>
-                            </div>
-                            <div class="market-card-price">5,234.18</div>
-                            <div class="market-card-change change-positive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>
-                                +1.32% (+68.24)
-                            </div>
-                        </div>
-                        <div class="market-card">
-                            <div class="market-card-header">
-                                <div class="market-card-name">Nasdaq</div>
-                                <div class="market-card-symbol">QQQ</div>
-                            </div>
-                            <div class="market-card-price">16,752.23</div>
-                            <div class="market-card-change change-positive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>
-                                +2.15% (+352.85)
-                            </div>
-                        </div>
-                        <div class="market-card">
-                            <div class="market-card-header">
-                                <div class="market-card-name">Dow Jones</div>
-                                <div class="market-card-symbol">DIA</div>
-                            </div>
-                            <div class="market-card-price">38,654.42</div>
-                            <div class="market-card-change change-positive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>
-                                +0.76% (+291.24)
-                            </div>
-                        </div>
-                        <div class="market-card">
-                            <div class="market-card-header">
-                                <div class="market-card-name">Russell 2000</div>
-                                <div class="market-card-symbol">IWM</div>
-                            </div>
-                            <div class="market-card-price">2,184.87</div>
-                            <div class="market-card-change change-negative">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z"/>
-                                </svg>
-                                -0.45% (-9.82)
-                            </div>
-                        </div>
-                        <div class="market-card">
-                            <div class="market-card-header">
-                                <div class="market-card-name">10-Year Treasury</div>
-                                <div class="market-card-symbol">TNX</div>
-                            </div>
-                            <div class="market-card-price">4.29%</div>
-                            <div class="market-card-change change-positive">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path fill-rule="evenodd" d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5z"/>
-                                </svg>
-                                +0.05
-                            </div>
-                        </div>
-                    </div>
-                </div>
+           <!-- Market Overview Card -->
+<div class="card market-overview-card">
+    <div class="card-header">
+        <div class="card-title">Market Overview</div>
+        <div class="card-actions">
+            <button class="card-button active">Markets</button>
+        </div>
+    </div>
+    <div class="market-overview">
+       
+    </div>
+</div>
+<script src="./assets/js/overview.js"></script>
 
                 <div class="card stock-chart-card" >
     <!-- Chart Controls -->
